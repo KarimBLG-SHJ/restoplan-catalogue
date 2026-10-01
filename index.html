@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Restoplan — Catalogue des mini-services d'architecte</title>
+<style>
+  :root{
+    --navy:#0f1b2d; --navy-soft:#17263d; --terracotta:#c7653d;
+    --sand:#f6efe6; --cream:#fffaf3; --ink:#1d2430; --muted:#697386;
+    --line:#e6dccf; --white:#fff;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+       color:var(--ink);background:var(--cream);line-height:1.55}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* header */
+  header{background:var(--navy);color:var(--white);padding:48px 0 36px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px;margin-bottom:26px}
+  .brand-mark{width:34px;height:34px;border-radius:10px;border:2px solid var(--terracotta);
+              display:grid;place-items:center;color:var(--terracotta);font-weight:900}
+  header h1{font-size:clamp(30px,4.6vw,46px);line-height:1.02;letter-spacing:-.05em;margin:0 0 14px;max-width:760px}
+  header p.intro{color:rgba(255,255,255,.78);font-size:17px;max-width:720px;margin:0 0 26px}
+
+  .legend{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13.5px;color:rgba(255,255,255,.82)}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+
+  /* controls bar */
+  .controls{position:sticky;top:0;z-index:10;background:rgba(255,250,243,.95);backdrop-filter:blur(10px);
+            border-bottom:1px solid var(--line)}
+  .controls .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;padding-top:12px;padding-bottom:12px}
+  .ctl{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+  .ctl input[type=number]{width:84px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
+       font:inherit;font-weight:700;color:var(--navy);background:var(--white)}
+  .ctl input[type=search]{width:min(320px,70vw);padding:9px 12px;border:1px solid var(--line);border-radius:10px;
+       font:inherit;background:var(--white);color:var(--ink)}
+  .ctl input:focus{outline:2px solid var(--terracotta);outline-offset:1px}
+  nav.cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+  nav.cats a{white-space:nowrap;font-size:13px;color:var(--navy-soft);text-decoration:none;
+             padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--white)}
+  nav.cats a:hover{border-color:var(--terracotta);color:var(--terracotta)}
+
+  /* sections */
+  main{padding:30px 0 70px}
+  section.cat{margin-bottom:54px;scroll-margin-top:130px}
+  section.cat h2{font-size:clamp(24px,3.2vw,34px);letter-spacing:-.045em;line-height:1.1;color:var(--navy);margin:0 0 6px}
+  section.cat p.cat-desc{color:var(--muted);margin:0 0 18px;max-width:720px}
+
+  .rows{border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:1fr 200px;gap:18px;padding:18px 0;border-bottom:1px solid var(--line);
+       align-items:start}
+  .row h3{margin:0 0 4px;font-size:17px;letter-spacing:-.02em;color:var(--navy);line-height:1.3}
+  .row .desc{margin:0 0 8px;color:#3e4858;font-size:14.5px;max-width:64ch}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;line-height:1.5}
+  .tag.obl{background:var(--navy);color:var(--white)}
+  .tag.part{background:var(--white);color:var(--muted);border:1px solid var(--line)}
+
+  .price{text-align:right}
+  .price .amt{font-size:26px;font-weight:900;letter-spacing:-.045em;color:var(--navy);line-height:1;white-space:nowrap}
+  .price .amt small{font-size:14px;font-weight:700;letter-spacing:0;color:var(--muted);margin-left:3px}
+  .price .basis{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px}
+  .basis.etude{background:var(--terracotta);color:var(--white)}
+  .basis.estim{background:var(--white);color:var(--terracotta);border:1px solid var(--terracotta)}
+  .price .hrs{display:block;margin-top:6px;font-size:12px;color:var(--muted)}
+
+  .row.hidden{display:none}
+  .empty{color:var(--muted);padding:18px 0;display:none}
+  section.cat.empty-cat{display:none}
+
+  footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:14px}
+  footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  footer strong{color:var(--navy)}
+
+  @media (max-width:760px){
+    .row{grid-template-columns:1fr}
+    .price{text-align:left;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+    .price .basis{margin-top:0}
+    footer .wrap{grid-template-columns:1fr}
+  }
+  @media print{
+    .controls{position:static;background:var(--white)}
+    nav.cats,.ctl.search{display:none}
+    header{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section.cat{break-inside:auto}
+    .row{break-inside:avoid}
+    section.cat h2{break-after:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="brand-mark">R</span> Restoplan</div>
+    <h1>Les petits services d'architecte qui débloquent un restaurant.</h1>
+    <p class="intro">Chaque ligne règle un problème précis du restaurateur, à prix fixe, sans jargon. Le travail de l'architecte est découpé en mini-services identifiables en un coup d'œil. Prix hors taxes.</p>
+    <div class="legend">
+      <span><i class="basis etude tag" style="display:inline-block">Prix étude</i> issu de ton étude de marché (moyenne des fourchettes constatées)</span>
+      <span><i class="basis estim tag" style="display:inline-block">Estimation</i> heures estimées × taux horaire de référence, à valider</span>
+      <span><i class="tag obl">Obligatoire</i> exigé par la réglementation</span>
+      <span><i class="tag part">Avec partenaire</i> l'architecte coordonne un spécialiste</span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <label class="ctl">Taux horaire de référence
+      <input type="number" id="rate" value="120" min="40" step="5" /> € / h
+    </label>
+    <label class="ctl search"><input type="search" id="q" placeholder="Rechercher un problème, un service…" /></label>
+    <nav class="cats" id="catnav"></nav>
+  </div>
+</div>
+
+<main class="wrap" id="catalog"></main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <strong id="count"></strong><br/>
+      Les prix « Prix étude » reprennent tels quels les montants de l'étude de marché. Les « Estimations » sont calculées en heures × taux horaire ; modifie le taux en haut de page pour tout recalculer, puis remplace chaque estimation par une moyenne de marché quand tu l'as.
+    </div>
+    <div>
+      <strong>Grille au m²</strong><br/>
+      Mode interne pour ajuster les services « plans » sur les grandes surfaces (voir dernière catégorie). Face au client, le forfait reste le prix affiché : un prix fixe se comprend seul, un prix au m² oblige à calculer.
+    </div>
+  </div>
+</footer>
+
+<script>
+const CATS = [
+  ["avant",   "Avant de m'engager",                          "Vérifier un local avant de signer un bail ou un achat."],
+  ["plans",   "Mon local et mes plans",                      "Les bases dont dépendent tous les autres services."],
+  ["mairie",  "Autorisations et mairie",                     "Les dossiers administratifs, y compris ceux qu'on oublie."],
+  ["copro",   "Copropriété, propriétaire et voisins",        "Débloquer un projet freiné par un tiers."],
+  ["normes",  "Normes, sécurité et accessibilité",           "Les points qui recalent à la commission de sécurité."],
+  ["cuisine", "Cuisine et hygiène",                          "Du plan de cuisine au contrôle sanitaire."],
+  ["chantier","Travaux et chantier",                         "Là où le restaurateur se fait le plus souvent avoir."],
+  ["apres",   "Après les travaux et après un contrôle",      "Déclarer, lever des réserves, se mettre en règle."],
+  ["special", "Belgique et formats spécifiques",             "Cas particuliers."],
+  ["m2",      "Tarification au m² (mode alternatif, interne)","Pour ajuster les services « plans » selon la surface. Pas affiché au client."],
+];
+
+// b: "etude" = prix issu de l'étude ; "estim" = heures × taux. u: unité ("", "/h", "/m²"). t: tags.
+const ITEMS = [
+  // Avant de m'engager
+  {c:"avant", n:"Je veux l'avis d'un architecte, sur place", d:"Un expert vient voir votre local et vous dit, sur place, ce qui est possible et ce qui coince. Comptez 2 h pour une première visite.", p:120, u:"/h", b:"etude", t:[]},
+  {c:"avant", n:"Avant de signer : le bâtiment tient-il ?", d:"Audit structurel du local avant achat ou bail : murs, planchers, charges admissibles.", p:360, b:"etude", t:[]},
+  {c:"avant", n:"Ai-je le droit d'ouvrir un restaurant ici ?", d:"Étude de faisabilité réglementaire et urbaine : PLU, destination du local, règles de la mairie.", p:1250, b:"etude", t:[]},
+  {c:"avant", n:"Je reprends : qu'est-ce qui est aux normes, qu'est-ce qui ne l'est pas ?", d:"Diagnostic de conformité de l'existant : extraction, gaz, électricité, sécurité, accessibilité. Rapport avec priorités.", h:8, b:"estim", t:[]},
+
+  // Mon local et mes plans
+  {c:"plans", n:"Je n'ai pas les plans de mon local", d:"Relevé de l'existant (métré) et plans propres à l'échelle. Base indispensable à tous les autres services.", h:8, b:"estim", t:[]},
+  {c:"plans", n:"Combien de personnes puis-je accueillir ?", d:"Calcul de l'effectif admissible et classement ERP (type, catégorie). Conditionne la sécurité, les sorties et l'assurance.", h:3, b:"estim", t:[]},
+  {c:"plans", n:"Combien de couverts puis-je mettre ?", d:"Plan d'implantation de la salle : places assises, circulations, accès PMR, optimisation du nombre de couverts.", h:6, b:"estim", t:[]},
+  {c:"plans", n:"Je veux voir mon futur restaurant avant de me lancer", d:"Esquisses et avant-projet sommaire : les premiers plans dessinés pour visualiser et valider la direction.", p:3000, b:"etude", t:[]},
+  {c:"plans", n:"Il me faut une image de mon projet", d:"Perspective ou visuel 3D pour la banque, un investisseur, la mairie ou l'Architecte des Bâtiments de France.", h:8, b:"estim", t:[]},
+
+  // Autorisations et mairie
+  {c:"mairie", n:"Je veux changer ma devanture ou mon enseigne", d:"Dossier de déclaration préalable de travaux (DP) déposé à la mairie. Travaux visibles de l'extérieur, sans gros œuvre.", p:1500, b:"etude", t:["obl"]},
+  {c:"mairie", n:"Il me faut un permis de construire", d:"Montage complet du dossier de permis de construire (PC) : création de surface, modification de structure, changement de destination avec travaux.", p:2550, b:"etude", t:["obl"]},
+  {c:"mairie", n:"Je dois être autorisé à recevoir du public", d:"Dossier d'autorisation de travaux ERP (AT) avec notices de sécurité incendie et d'accessibilité. Obligatoire pour ouvrir au public.", p:3750, b:"etude", t:["obl"]},
+  {c:"mairie", n:"Je veux une terrasse", d:"Plan d'aménagement de la terrasse et dossier d'autorisation d'occupation du domaine public (AOT) déposé à la mairie.", p:1000, b:"etude", t:["obl"]},
+  {c:"mairie", n:"Mon local n'est pas classé restaurant", d:"Dossier de changement de destination du local (commerce vers restauration). Blocage n°1 des ouvertures en centre-ville.", h:10, b:"estim", t:["obl"]},
+  {c:"mairie", n:"Je veux poser mon enseigne", d:"Demande d'autorisation d'enseigne selon le règlement local de publicité. Distinct de la devanture.", h:3, b:"estim", t:["obl"]},
+  {c:"mairie", n:"Je veux un store-banne, une pergola ou une bâche", d:"Demande d'autorisation spécifique pour une installation en façade ou sur le domaine public.", h:3, b:"estim", t:["obl"]},
+  {c:"mairie", n:"Je veux un chevalet, un étalage ou un panneau trottoir", d:"Demande d'occupation du domaine public hors terrasse.", h:2, b:"estim", t:["obl"]},
+  {c:"mairie", n:"Mon local est en zone protégée (ABF, monument historique)", d:"Dossier pour l'Architecte des Bâtiments de France avec insertion paysagère. Évite le refus de la façade.", h:10, b:"estim", t:[]},
+  {c:"mairie", n:"Ma salle est en sous-sol", d:"Demande de dérogation ERP pour l'exploitation d'un local ou d'une salle en sous-sol.", h:5, b:"estim", t:[]},
+
+  // Copropriété, propriétaire et voisins
+  {c:"copro", n:"Ma copropriété refuse mon conduit d'extraction", d:"Étude d'implantation du conduit (façade ou toiture, débouché, distances) et dossier technique pour l'assemblée générale.", h:8, b:"estim", t:[]},
+  {c:"copro", n:"Mon propriétaire veut un dossier avant d'autoriser les travaux", d:"Dossier bailleur : plans et descriptif des travaux prévus.", h:5, b:"estim", t:[]},
+  {c:"copro", n:"Je dois m'isoler du logement au-dessus ou du voisin", d:"Étude d'isolement coupe-feu et acoustique entre tiers.", h:6, b:"estim", t:[]},
+
+  // Normes, sécurité et accessibilité
+  {c:"normes", n:"J'ai une amende : mon restaurant n'est pas accessible aux PMR", d:"Diagnostic accessibilité et demande de dérogation si le local ne peut pas tout respecter.", p:750, b:"etude", t:["obl"]},
+  {c:"normes", n:"La commission de sécurité exige un désenfumage", d:"Étude de désenfumage : évacuation des fumées en cas d'incendie.", p:1000, b:"etude", t:["obl"]},
+  {c:"normes", n:"Mes voisins se plaignent du bruit", d:"Diagnostic acoustique et préconisations pour être en règle et éviter la fermeture.", p:2300, b:"etude", t:[]},
+  {c:"normes", n:"Ai-je assez de sorties de secours ?", d:"Vérification des dégagements : nombre et largeur des sorties selon l'effectif.", h:3, b:"estim", t:["obl"]},
+  {c:"normes", n:"Mes toilettes ne sont pas aux normes", d:"Mise en conformité des sanitaires clients : nombre de WC, WC accessible PMR.", h:4, b:"estim", t:["obl"]},
+  {c:"normes", n:"Il me manque des vestiaires ou des WC pour le personnel", d:"Aménagement conforme au code du travail : vestiaires et sanitaires séparés.", h:4, b:"estim", t:["obl"]},
+  {c:"normes", n:"Mes matériaux de décoration sont-ils autorisés ?", d:"Vérification de la réaction au feu des revêtements, plafonds et rideaux.", h:3, b:"estim", t:[]},
+  {c:"normes", n:"Il me faut l'éclairage de sécurité et l'alarme", d:"Plan d'implantation de l'éclairage de sécurité (BAES) et de l'alarme incendie.", h:4, b:"estim", t:["obl","part"]},
+  {c:"normes", n:"Ma salle manque d'air", d:"Ventilation et renouvellement d'air réglementaire de la salle, distinct de l'extraction cuisine.", h:5, b:"estim", t:[]},
+
+  // Cuisine et hygiène
+  {c:"cuisine", n:"Je veux concevoir ma cuisine professionnelle", d:"Plan technique complet de la cuisine sur-mesure : postes, flux, équipements, raccordements.", p:9000, b:"etude", t:[]},
+  {c:"cuisine", n:"Ma hotte ou mon extraction n'est pas aux normes", d:"Dimensionnement de l'extraction et de la ventilation : fumées, odeurs, thermique.", p:1400, b:"etude", t:["obl"]},
+  {c:"cuisine", n:"Je dois passer le contrôle d'hygiène", d:"Validation du plan d'hygiène et de la marche en avant (HACCP) par un consultant.", p:800, b:"etude", t:["obl"]},
+  {c:"cuisine", n:"Je dois installer un bac à graisse", d:"Dimensionnement et implantation du séparateur à graisses exigé par l'assainissement. Fourniture non comprise.", h:4, b:"estim", t:["obl","part"]},
+  {c:"cuisine", n:"Où mettre mes poubelles ?", d:"Aménagement d'un local déchets conforme.", h:3, b:"estim", t:[]},
+
+  // Travaux et chantier
+  {c:"chantier", n:"Je veux casser un mur", d:"Étude de structure pour ouvrir un mur porteur en sécurité : cuisine ouverte, agrandissement de la salle.", p:1625, b:"etude", t:[]},
+  {c:"chantier", n:"Je veux agrandir ou faire une extension", d:"Étude de structure complète du projet.", p:2750, b:"etude", t:[]},
+  {c:"chantier", n:"Je veux des devis comparables", d:"Descriptif de travaux simplifié à envoyer aux entreprises pour obtenir des devis sur la même base.", h:6, b:"estim", t:[]},
+  {c:"chantier", n:"Mes devis sont-ils cohérents ?", d:"Analyse comparative des devis reçus : écarts, oublis, points à négocier.", h:3, b:"estim", t:[]},
+  {c:"chantier", n:"Combien vont coûter mes travaux et combien de temps de fermeture ?", d:"Estimation budgétaire du chantier et planning prévisionnel.", h:5, b:"estim", t:[]},
+  {c:"chantier", n:"Je veux qu'un professionnel vérifie mon chantier", d:"Visite de contrôle ponctuelle avec compte rendu. Prix par visite.", h:2, b:"estim", t:[]},
+  {c:"chantier", n:"Mon chantier est fini : est-ce conforme à ce qui était prévu ?", d:"Réception des travaux et liste de réserves.", h:4, b:"estim", t:[]},
+  {c:"chantier", n:"Je dois vérifier l'amiante et le plomb avant travaux", d:"Coordination du diagnostic amiante et plomb obligatoire avant travaux dans un bâtiment ancien. Coût du diagnostiqueur non compris.", h:2, b:"estim", t:["obl","part"]},
+
+  // Après les travaux et après un contrôle
+  {c:"apres", n:"La commission de sécurité passe", d:"Préparation du dossier et accompagnement le jour de la visite.", h:6, b:"estim", t:[]},
+  {c:"apres", n:"La commission a émis des réserves", d:"Plan de levée de réserves.", h:4, b:"estim", t:[]},
+  {c:"apres", n:"La DDPP m'a mis une non-conformité d'aménagement", d:"Plan correctif hygiène après contrôle.", h:5, b:"estim", t:[]},
+  {c:"apres", n:"Mes travaux sont finis, je dois le déclarer", d:"Déclaration d'achèvement et de conformité des travaux (DAACT) et attestation d'accessibilité.", h:3, b:"estim", t:["obl"]},
+  {c:"apres", n:"Je dois fournir mon registre d'accessibilité", d:"Constitution du registre public d'accessibilité, obligatoire pour tout ERP.", h:3, b:"estim", t:["obl"]},
+
+  // Belgique et formats spécifiques
+  {c:"special", n:"J'ouvre en Belgique", d:"Audit pour permis d'environnement et certificat PEB.", p:1750, b:"etude", t:["obl"]},
+  {c:"special", n:"J'ouvre une dark kitchen ou un kiosque", d:"Autorisations spécifiques à ces formats.", h:6, b:"estim", t:[]},
+
+  // Tarification au m²
+  {c:"m2", n:"Conception commerciale et architecture d'intérieur", d:"Étude et réalisation des plans. Moyenne entre 50 et 90 €/m² ; les surfaces de moins de 50 m² sont facturées plus cher au m².", p:70, u:"/m²", b:"etude", t:[]},
+  {c:"m2", n:"Plans techniques seuls", d:"Étude et réalisation des plans techniques.", p:65, u:"/m²", b:"etude", t:[]},
+  {c:"m2", n:"Montage d'une demande de permis de construire au m²", d:"Alternative au forfait PC, facturée à la surface.", p:50, u:"/m²", b:"etude", t:[]},
+];
+
+const fmt = n => n.toLocaleString("fr-FR").replace(/\u202f|\u00a0/g, "\u202f") + "\u202f€";
+const TAGS = {obl:["Obligatoire","obl"], part:["Avec partenaire","part"]};
+
+function render(){
+  const rate = Math.max(1, Number(document.getElementById("rate").value) || 120);
+  const q = (document.getElementById("q").value || "").trim().toLowerCase();
+  const nav = document.getElementById("catnav"); nav.innerHTML = "";
+  const main = document.getElementById("catalog"); main.innerHTML = "";
+  let shown = 0;
+
+  CATS.forEach(([key,title,desc])=>{
+    const items = ITEMS.filter(i=>i.c===key);
+    const sec = document.createElement("section"); sec.className="cat"; sec.id="cat-"+key;
+    sec.innerHTML = `<h2>${title}</h2><p class="cat-desc">${desc}</p><div class="rows"></div>`;
+    const rows = sec.querySelector(".rows");
+    let visible = 0;
+
+    items.forEach(it=>{
+      const hay = (it.n+" "+it.d).toLowerCase();
+      if(q && !hay.includes(q)) return;
+      visible++; shown++;
+      const price = it.b==="estim" ? it.h*rate : it.p;
+      const unit = it.u ? `<small>${it.u}</small>` : "";
+      const basis = it.b==="etude"
+        ? `<span class="basis etude">Prix étude</span>`
+        : `<span class="basis estim">Estimation</span><span class="hrs">${it.h} h × ${rate} €</span>`;
+      const tags = it.t.map(t=>`<span class="tag ${TAGS[t][1]}">${TAGS[t][0]}</span>`).join("");
+      const row = document.createElement("article"); row.className="row";
+      row.innerHTML = `
+        <div>
+          <h3>${it.n}</h3>
+          <p class="desc">${it.d}</p>
+          ${tags?`<div class="tags">${tags}</div>`:""}
+        </div>
+        <div class="price"><div class="amt">${fmt(price)}${unit}</div>${basis}</div>`;
+      rows.appendChild(row);
+    });
+
+    if(visible){
+      main.appendChild(sec);
+      const a = document.createElement("a"); a.href="#cat-"+key; a.textContent=`${title} (${visible})`;
+      nav.appendChild(a);
+    }
+  });
+
+  const nEtude = ITEMS.filter(i=>i.b==="etude").length, nEstim = ITEMS.length-nEtude;
+  document.getElementById("count").textContent =
+    `${ITEMS.length} services au total : ${nEtude} prix issus de l'étude, ${nEstim} estimations.` + (q?` ${shown} affichés pour « ${q} ».`:"");
+}
+
+document.getElementById("rate").addEventListener("input", render);
+document.getElementById("q").addEventListener("input", render);
+render();
+</script>
+</body>
+</html>
