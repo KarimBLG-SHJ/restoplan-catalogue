@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Restoplan — Direction artistique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;900&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0F1B2D;--navy2:#17263D;--terra:#C7653D;--terra2:#E08A62;--sand:#F6EFE6;--cream:#FFFAF3;--ink:#1D2430;--muted:#697386;--line:#E6DCCF;--white:#fff;--stamp:#2E7D4F}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55}
+  .g{font-family:"Schibsted Grotesk",Inter,sans-serif;letter-spacing:-.04em}
+  .m{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+  a{color:var(--terra)}
+
+  /* cover */
+  .cover{background:var(--navy);color:var(--white);padding:70px 0 60px;position:relative;overflow:hidden}
+  .cover .wrap{position:relative;z-index:1}
+  .cover .k{color:var(--terra2);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:26px}
+  .cover h1{font-size:clamp(44px,8vw,112px);line-height:.92;margin:0 0 22px;font-weight:900}
+  .cover h1 em{font-style:normal;color:var(--terra2)}
+  .cover p{max-width:640px;font-size:18px;color:rgba(255,255,255,.75);margin:0}
+  .cotes{position:absolute;inset:0;pointer-events:none;opacity:.18}
+  .cotes line,.cotes path{stroke:#fff;stroke-width:1;fill:none}
+  .cotes text{fill:#fff;font-family:"IBM Plex Mono";font-size:11px}
+
+  nav.toc{position:sticky;top:0;z-index:10;background:rgba(255,250,243,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav.toc .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 24px}
+  nav.toc a{white-space:nowrap;font-size:13px;color:var(--navy);text-decoration:none;padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--white)}
+
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  .num{color:var(--terra);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 10px}
+  h2{font-size:clamp(30px,4.4vw,52px);line-height:1;margin:0 0 18px;color:var(--navy);font-weight:900}
+  .lead{font-size:18px;color:#3e4858;max-width:720px;margin:0 0 30px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:24px}
+  .card h3{margin:0 0 8px;font-size:18px;color:var(--navy)}
+  .card p{margin:0;color:#3e4858;font-size:14.5px}
+  .quote{font-size:clamp(22px,3vw,34px);line-height:1.15;color:var(--navy);font-weight:700;max-width:860px;margin:0 0 20px}
+  .muted{color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  td,th{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+  /* stamp */
+  .stamp{display:inline-block;border:3px solid var(--stamp);color:var(--stamp);border-radius:8px;padding:4px 12px;font-weight:900;letter-spacing:.04em;transform:rotate(-6deg);font-size:1em}
+  .stamp.inv{border-color:var(--terra2);color:var(--terra2)}
+
+  /* logo */
+  .logos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .logo-box{border-radius:18px;padding:34px;display:flex;align-items:center;gap:16px;min-height:150px;border:1px solid var(--line)}
+  .mark{width:64px;height:64px;border-radius:16px;border:3px solid currentColor;position:relative;flex:none}
+  .mark::after{content:"";position:absolute;left:50%;top:10px;bottom:0;width:30%;background:currentColor;border-radius:4px 4px 0 0;transform:translateX(-50%)}
+  .mark::before{content:"";position:absolute;left:50%;top:10px;bottom:0;width:30%;transform:translateX(calc(-50% + 2px)) skewX(-12deg);background:var(--terra);border-radius:4px 4px 0 0;opacity:.95}
+  .wordmark{font-weight:900;font-size:34px;letter-spacing:-.05em}
+
+  .swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .sw{border-radius:14px;padding:16px;min-height:120px;display:flex;flex-direction:column;justify-content:flex-end;font-size:12px}
+  .sw b{display:block;font-size:14px}
+
+  .type td{font-size:15px}
+  .spec{font-size:12.5px;color:var(--muted)}
+
+  /* mockups */
+  .mock{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--white);box-shadow:0 20px 50px rgba(15,27,45,.10)}
+  .mock .bar{height:28px;background:#eee4d8;display:flex;align-items:center;gap:6px;padding:0 12px}
+  .mock .bar i{width:8px;height:8px;border-radius:50%;background:#cbbfae;display:block}
+  .hero-m{background:var(--cream);padding:34px 34px 30px;position:relative}
+  .hero-m .nav{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin-bottom:34px}
+  .hero-m .nav b{color:var(--navy);font-size:15px;letter-spacing:-.04em}
+  .hero-m h4{font-size:clamp(28px,4.4vw,54px);line-height:.95;margin:0 0 14px;color:var(--navy);font-weight:900;max-width:560px}
+  .hero-m p{font-size:14px;color:#3e4858;max-width:430px;margin:0 0 18px}
+  .hero-m .ask{display:flex;gap:8px;max-width:520px}
+  .hero-m .ask span{flex:1;border:1px solid var(--line);background:var(--white);border-radius:999px;padding:12px 16px;color:var(--muted);font-size:13px}
+  .hero-m .ask b{background:var(--terra);color:#fff;border-radius:999px;padding:12px 18px;font-size:13px}
+  .hero-m .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .hero-m .chips em{font-style:normal;font-size:11.5px;border:1px solid var(--line);background:var(--white);border-radius:999px;padding:5px 10px;color:var(--navy)}
+  .hero-m .plan{position:absolute;right:30px;top:80px;width:220px;opacity:.9}
+
+  .fiche{padding:26px;display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
+  .fiche h4{margin:0 0 6px;font-size:24px;color:var(--navy);line-height:1.05}
+  .fiche .ref{font-size:11px;color:var(--muted)}
+  .fiche p{font-size:13px;color:#3e4858;margin:8px 0}
+  .fiche ul{padding-left:18px;font-size:13px;color:#3e4858;margin:0}
+  .fiche .buy{background:var(--sand);border-radius:14px;padding:18px}
+  .fiche .price{font-size:30px;font-weight:900;color:var(--navy);letter-spacing:-.04em}
+  .fiche .price small{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:0}
+  .fiche .btn{display:block;background:var(--terra);color:#fff;text-align:center;border-radius:999px;padding:11px;font-weight:700;font-size:13px;margin-top:12px}
+  .fiche .next{margin-top:14px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+
+  .posters{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .poster{aspect-ratio:4/5;border-radius:16px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+  .poster .q{font-size:clamp(22px,2.6vw,34px);line-height:1;font-weight:900;letter-spacing:-.04em}
+  .poster .a{font-size:clamp(26px,3vw,40px);font-weight:900;letter-spacing:-.04em}
+  .poster .foot{display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;opacity:.8}
+  .poster .cote{position:absolute;left:24px;right:24px;top:50%;height:1px;background:currentColor;opacity:.25}
+  .p1{background:var(--navy);color:#fff}.p1 .a{color:var(--terra2)}
+  .p2{background:var(--terra);color:#fff}.p2 .a{color:var(--navy)}
+  .p3{background:var(--sand);color:var(--navy)}.p3 .a{color:var(--terra)}
+
+  .social{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .sq{aspect-ratio:1;border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:space-between}
+  .sq .t{font-size:clamp(20px,2.4vw,30px);font-weight:900;line-height:1;letter-spacing:-.04em}
+  .sq .s{font-size:12px;opacity:.8}
+
+  .flyer{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .cardp{aspect-ratio:1.75;border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line)}
+
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .step{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .step b{display:block;color:var(--terra);font-size:28px;letter-spacing:-.04em;margin-bottom:6px}
+  .step h3{margin:0 0 6px;font-size:16px;color:var(--navy)}
+  .step p{margin:0;font-size:13.5px;color:#3e4858}
+
+  .dont{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .dont .card h3{color:var(--stamp)} .dont .card.no h3{color:#b43a3a}
+
+  footer{padding:40px 0 60px;color:var(--muted);font-size:13px}
+  @media(max-width:860px){.two,.three,.logos,.posters,.social,.flyer,.steps,.dont,.fiche{grid-template-columns:1fr}.swatches{grid-template-columns:repeat(2,1fr)}.hero-m .plan{display:none}}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <svg class="cotes" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="60" y1="40" x2="60" y2="560"/><line x1="50" y1="40" x2="70" y2="40"/><line x1="50" y1="560" x2="70" y2="560"/>
+    <text x="30" y="300" transform="rotate(-90 30 300)">4 630</text>
+    <line x1="60" y1="580" x2="1140" y2="580"/><line x1="60" y1="570" x2="60" y2="590"/><line x1="1140" y1="570" x2="1140" y2="590"/>
+    <text x="580" y="598">11 200</text>
+    <path d="M900 120 h220 v180 h-220 z"/><path d="M900 300 a120 120 0 0 1 120 -120"/>
+    <text x="930" y="150">SALLE · 48 couverts</text>
+  </svg>
+  <div class="wrap">
+    <div class="k m">Restoplan · Direction artistique · Octobre 2026</div>
+    <h1 class="g">Restoplan.<br><em>Ça passe.</em></h1>
+    <p>Plateforme de marque et direction artistique. Une marque pour tous les restaurateurs, quel que soit le concept, la ville ou la taille : celle qui prend le mur devant lequel on est bloqué et qui dit par où ça passe.</p>
+  </div>
+</div>
+
+<nav class="toc"><div class="wrap">
+  <a href="#idee">1. L'idée</a><a href="#plateforme">2. Plateforme</a><a href="#identite">3. Identité</a><a href="#campagne">4. Campagne</a><a href="#site">5. Site</a><a href="#print">6. Print & réseaux</a><a href="#ton">7. Ton</a><a href="#deploiement">8. Déploiement</a><a href="index.html">Catalogue</a><a href="pnl.html">P&L</a>
+</div></nav>
+
+<section id="idee"><div class="wrap">
+  <p class="num m">01 — L'idée</p>
+  <h2 class="g">Tous les restaurateurs ont la même histoire : un mur.</h2>
+  <p class="lead">Un bistrot de quartier, un kebab, une table étoilée, un coffee shop, une franchise : rien à voir. Et pourtant tous, un jour, se prennent le même mur. La mairie qui refuse la devanture. La hotte que le voisin ne supporte plus. La commission de sécurité qui passe. L'amende PMR. La terrasse qu'on n'a pas le droit d'installer. Le local qu'on reprend sans savoir ce qui est aux normes.</p>
+  <div class="two">
+    <div>
+      <p class="quote g">Le restaurateur ne cherche pas un architecte. Il cherche à savoir si ça va passer.</p>
+      <p>C'est la vérité universelle de la marque, et c'est ce qui permet de parler à tout le monde sans cibler personne. Le mur est différent pour chacun ; le soulagement est le même. Restoplan ne vend pas des plans : il vend le moment où quelqu'un qui connaît le métier regarde votre problème et dit <strong>« ça passe »</strong>, puis le fait passer.</p>
+      <p>Le Brand DNA avait posé le territoire du <em>Passage</em> : franchir chaque seuil du projet avec clarté. « Ça passe » en est la version parlée, celle qu'un restaurateur dit à son associé en raccrochant.</p>
+    </div>
+    <div class="card">
+      <h3>Pourquoi ces deux mots</h3>
+      <p><strong>Ça passe</strong> a trois sens, tous justes. <em>Le dossier passe</em> : en mairie, en commission, chez le bailleur. <em>On passe</em> : du blocage à l'étape suivante, le Passage du Brand DNA. <em>Ça passe</em> : la réponse rassurante d'un pro, sans jargon, en deux syllabes.</p>
+      <p style="margin-top:10px">Et c'est une signature qui se décline à l'infini sur les 54 services : <em>Ma hotte ? Ça passe. Ma terrasse ? Ça passe. La commission ? Ça passe.</em></p>
+      <p style="margin-top:14px"><span class="stamp">ÇA PASSE</span></p>
+    </div>
+  </div>
+</div></section>
+
+<section id="plateforme"><div class="wrap">
+  <p class="num m">02 — Plateforme de marque</p>
+  <h2 class="g">Ce que la marque promet, prouve et refuse.</h2>
+  <table>
+    <tr><th style="width:200px">Catégorie</th><td>Services d'architecte à la carte pour les restaurants. Le mot qui porte : <strong>à la carte</strong>. On achète la pièce qui manque, pas la mission.</td></tr>
+    <tr><th>Promesse</th><td><strong>Un problème de resto, une réponse d'architecte, un prix fixe.</strong> Signature : <strong>Restoplan. Ça passe.</strong></td></tr>
+    <tr><th>Pour qui</th><td>Tout restaurateur, café, snack, boulangerie, dark kitchen, franchise, en France. Pas de cible : une situation. Celui qui est bloqué aujourd'hui.</td></tr>
+    <tr><th>Preuve</th><td>Une architecte, trente ans de restaurants, plus de 300 projets. Un exemple de livrable visible sur chaque fiche. Un délai annoncé. Le nom de qui signe.</td></tr>
+    <tr><th>Différence</th><td>Entre le générateur de dossier à 399 € sans visage et le cabinet à 3 000 € sans découpage : <strong>le prix du dossier en ligne, la signature d'un architecte.</strong></td></tr>
+    <tr><th>Rôle</th><td>Celui qui regarde le mur avec vous et dit par où ça passe. Guide, traducteur, garant. Jamais vendeur.</td></tr>
+    <tr><th>Ce qu'on refuse</th><td>Promettre l'accord de la mairie. Parler en noms de documents. Mettre le design en vitrine. Faire semblant d'être une plateforme sans personne derrière.</td></tr>
+  </table>
+</div></section>
+
+<section id="identite"><div class="wrap">
+  <p class="num m">03 — Identité visuelle</p>
+  <h2 class="g">Le plan, le tampon, la cote.</h2>
+  <p class="lead">Trois objets du métier deviennent le langage de la marque. Le <strong>plan</strong> (traits fins, fond papier) dit la compétence. Le <strong>tampon « Ça passe »</strong> dit la validation. La <strong>cote</strong> (les lignes de mesure autour des titres) dit la précision et signe chaque visuel sans logo.</p>
+
+  <h3 class="g" style="font-size:22px;color:var(--navy);margin:30px 0 12px">Le logo : la porte dans le R</h3>
+  <p class="muted" style="max-width:720px;margin-top:0">Le monogramme existant (R dans un carré arrondi) est gardé. On y ouvre une porte : le fût du R devient un battant terracotta légèrement entrouvert. On passe. Lisible en 16 px, imprimable en une couleur.</p>
+  <div class="logos">
+    <div class="logo-box" style="background:var(--white);color:var(--navy)"><div class="mark"></div><div class="wordmark g">Restoplan</div></div>
+    <div class="logo-box" style="background:var(--navy);color:#fff"><div class="mark"></div><div class="wordmark g">Restoplan</div></div>
+    <div class="logo-box" style="background:var(--terra);color:#fff"><div class="mark" style="--terra:#fff"></div><div><div class="wordmark g">Restoplan</div><div class="m" style="font-size:12px;opacity:.85;margin-top:2px">Ça passe.</div></div></div>
+  </div>
+
+  <h3 class="g" style="font-size:22px;color:var(--navy);margin:34px 0 12px">La palette : papier, encre, action, validation</h3>
+  <div class="swatches">
+    <div class="sw" style="background:#0F1B2D;color:#fff"><b>Encre</b>#0F1B2D · titres, plans, fonds forts</div>
+    <div class="sw" style="background:#C7653D;color:#fff"><b>Terracotta</b>#C7653D · l'action, un seul accent par écran</div>
+    <div class="sw" style="background:#FFFAF3;color:var(--navy);border:1px solid var(--line)"><b>Papier</b>#FFFAF3 · le fond, comme un calque</div>
+    <div class="sw" style="background:#F6EFE6;color:var(--navy)"><b>Sable</b>#F6EFE6 · blocs, cartes, respiration</div>
+    <div class="sw" style="background:#2E7D4F;color:#fff"><b>Tampon</b>#2E7D4F · réservé au « Ça passe » et aux validations</div>
+  </div>
+  <p class="spec" style="margin-top:10px">Règle : la terracotta ne marque que ce qui est cliquable ou décisif. Le vert tampon n'apparaît que pour dire qu'une chose est validée. Tout le reste est encre sur papier.</p>
+
+  <h3 class="g" style="font-size:22px;color:var(--navy);margin:34px 0 12px">La typographie : une voix qui tranche, une main qui mesure</h3>
+  <table class="type">
+    <tr><th style="width:200px">Titres</th><td class="g" style="font-size:28px;font-weight:900;color:var(--navy)">Schibsted Grotesk Black</td><td class="spec">Interlettrage serré (−0,04 em), interlignage 0,95. Phrases courtes, point final. C'est la voix de la marque.</td></tr>
+    <tr><th>Texte</th><td style="font-size:17px">Inter Regular / Medium</td><td class="spec">Lisible partout, neutre, ne se fait pas remarquer. 16-17 px sur écran.</td></tr>
+    <tr><th>Cotes, prix, références</th><td class="m" style="font-size:16px">IBM Plex Mono · 1 500 € HT · DP-2026-014</td><td class="spec">Tout ce qui est mesure, prix, délai, référence de dossier. C'est la main de l'architecte sur le plan.</td></tr>
+  </table>
+
+  <h3 class="g" style="font-size:22px;color:var(--navy);margin:34px 0 12px">L'image</h3>
+  <div class="three">
+    <div class="card"><h3>Des vrais restaurants</h3><p>Cuisines en service, salles avant ouverture, façades de rue, terrasses pliées. Lumière naturelle, pas de sourire de banque d'images. Le restaurateur doit reconnaître son quotidien.</p></div>
+    <div class="card"><h3>Le plan par-dessus</h3><p>Sur chaque photo, un trait de plan terracotta : la cote de la terrasse, le tracé du conduit, le cercle de giration PMR. Le regard de l'architecte rendu visible.</p></div>
+    <div class="card"><h3>Jamais de rendu 3D léché</h3><p>Pas de perspectives de promoteur. Restoplan règle des problèmes, il ne vend pas de rêve. Les visuels 3D restent dans le service « image de mon projet ».</p></div>
+  </div>
+</div></section>
+
+<section id="campagne"><div class="wrap">
+  <p class="num m">04 — La campagne</p>
+  <h2 class="g">« Ma hotte ? Ça passe. »</h2>
+  <p class="lead">Un seul mécanisme, déclinable sur les 54 services, en affiche, en post, en bannière, en objet. En haut, le mur, dit avec les mots du restaurateur. En bas, le tampon. Entre les deux, une cote : la marque mesure avant de répondre. Universel parce que chacun y trouve son mur.</p>
+  <div class="posters">
+    <div class="poster p1"><div class="q g">Ma hotte,<br>le voisin<br>n'en peut plus.</div><div class="cote"></div><div><div class="a g">Ça passe.</div><div class="foot"><span class="m">Dimensionnement extraction · 1 400 € HT</span><span>Restoplan</span></div></div></div>
+    <div class="poster p2"><div class="q g">La commission<br>de sécurité<br>passe mardi.</div><div class="cote"></div><div><div class="a g">Ça passe.</div><div class="foot"><span class="m">Préparation commission · 720 € HT</span><span>Restoplan</span></div></div></div>
+    <div class="poster p3"><div class="q g">Je reprends.<br>Je ne sais pas<br>ce que j'achète.</div><div class="cote"></div><div><div class="a g">Ça passe.</div><div class="foot"><span class="m">Diagnostic de reprise · 960 € HT</span><span>Restoplan</span></div></div></div>
+  </div>
+  <div class="two" style="margin-top:26px">
+    <div class="card"><h3>Autres déclinaisons</h3><p>« Ma terrasse, la mairie dit non. » · « Mon enseigne, l'ABF a un avis. » · « 48 couverts, la mairie en compte 30. » · « Mes toilettes ne passent pas. » · « Mon mur porteur, mon futur bar. » · « Mon local n'est pas un restaurant, pas encore. » Chaque mur est une phrase entendue, pas un nom de document.</p></div>
+    <div class="card"><h3>Le mécanisme en vidéo, 6 secondes</h3><p>Plan fixe sur le mur réel : une hotte, une porte trop étroite, une devanture. Un trait de cote terracotta se dessine dessus. Le tampon tombe : « Ça passe. » Son : le tampon. Rien d'autre. Format vertical, sans voix, lisible sans son.</p></div>
+  </div>
+</div></section>
+
+<section id="site"><div class="wrap">
+  <p class="num m">05 — Le site</p>
+  <h2 class="g">Une question, pas un menu.</h2>
+  <p class="lead">La page d'accueil ne présente pas 54 produits. Elle pose une seule question, celle que le restaurateur se pose déjà, et répond avec le bon service. Le catalogue complet existe, un cran derrière.</p>
+  <div class="mock">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="hero-m">
+      <div class="nav"><b class="g">Restoplan</b><span>Services · Comment ça marche · Qui signe · <span style="color:var(--terra);font-weight:700">Mon dossier</span></span></div>
+      <h4 class="g">Qu'est-ce qui<br>bloque, là,<br>maintenant ?</h4>
+      <p>Dites-le avec vos mots. On vous dit ce qu'il faut, combien ça coûte, et quand c'est livré. Signé par une architecte qui fait des restaurants depuis trente ans.</p>
+      <div class="ask"><span>Ma hotte n'est pas aux normes, le voisin se plaint…</span><b>Ça passe ?</b></div>
+      <div class="chips"><em>Je reprends un resto</em><em>Terrasse</em><em>Devanture / enseigne</em><em>Commission de sécurité</em><em>Amende PMR</em><em>Casser un mur</em><em>Je veux l'avis d'un pro, sur place · 240 €</em></div>
+      <svg class="plan" viewBox="0 0 220 200" aria-hidden="true"><g fill="none" stroke="#0F1B2D" stroke-width="1.2"><rect x="10" y="20" width="200" height="150"/><path d="M10 95 h120 M130 20 v150"/><path d="M160 60 a25 25 0 0 1 25 25" stroke="#C7653D" stroke-width="2"/><circle cx="60" cy="130" r="22" stroke="#C7653D" stroke-dasharray="3 3"/></g><g fill="#0F1B2D" font-family="IBM Plex Mono" font-size="9"><text x="40" y="188">11 200</text><text x="150" y="50">Ø 1 500</text></g></svg>
+    </div>
+  </div>
+
+  <h3 class="g" style="font-size:22px;color:var(--navy);margin:34px 0 12px">La fiche service : périmètre, aperçu, délai, prix, limites, qui signe, et la suite</h3>
+  <div class="mock"><div class="bar"><i></i><i></i><i></i></div>
+    <div class="fiche">
+      <div>
+        <div class="ref m">Autorisations et mairie · DP · Obligatoire</div>
+        <h4 class="g">Je veux changer ma devanture ou mon enseigne.</h4>
+        <p>Vous voulez refaire la façade, poser une nouvelle enseigne, changer la couleur. Tout travail visible de la rue passe par une déclaration préalable en mairie. On la constitue, vous la déposez, ou on dépose pour vous.</p>
+        <p><strong>Ce que vous recevez</strong></p>
+        <ul><li>Plans de la façade existante et projetée, cotés</li><li>Notice descriptive et insertion dans la rue</li><li>Formulaire Cerfa rempli, liste des pièces, mode d'emploi du dépôt</li></ul>
+        <p><strong>Ce qu'il nous faut</strong> : 4 photos de la façade, l'adresse, vos envies en deux phrases.</p>
+        <p class="muted" style="font-size:12px"><strong>Ce qu'on ne promet pas</strong> : la décision de la mairie. On promet un dossier complet, conforme au règlement local, que la mairie ne pourra pas rejeter pour la forme.</p>
+      </div>
+      <div class="buy">
+        <div class="price g">1 500 € <small>HT · prix fixe</small></div>
+        <div class="m" style="font-size:12px;color:var(--muted);margin-top:6px">Livré sous 10 jours ouvrés</div>
+        <div class="btn">Lancer mon dossier</div>
+        <div style="margin-top:12px;font-size:12.5px;color:#3e4858"><strong>Qui signe</strong><br>Architecte DPLG, 30 ans de restaurants, 300+ projets. <a href="#">Voir un dossier livré</a></div>
+        <div class="next"><strong>La suite, souvent</strong> : autorisation d'enseigne (360 €), store-banne (360 €). <span class="stamp" style="font-size:11px">ÇA PASSE</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="print"><div class="wrap">
+  <p class="num m">06 — Print, comptoir, réseaux</p>
+  <h2 class="g">La marque se pose là où le restaurateur travaille.</h2>
+  <p class="lead">Une carte posée près de la caisse chez les fournisseurs, les comptables, les cabinets de cession. Un sous-bock de terrasse. Des posts qui ressemblent à des affiches, pas à des publicités.</p>
+  <div class="flyer">
+    <div class="cardp" style="background:var(--navy);color:#fff"><div class="g" style="font-size:26px;font-weight:900;line-height:1;letter-spacing:-.04em">Un problème<br>de resto ?</div><div><div class="g" style="font-size:30px;font-weight:900;color:var(--terra2);letter-spacing:-.04em">Ça passe.</div><div class="m" style="font-size:11px;opacity:.8">restoplan.fr · une réponse d'architecte, un prix fixe</div></div></div>
+    <div class="cardp" style="background:var(--sand);color:var(--navy)"><div class="m" style="font-size:11px;color:var(--muted)">Carte à poser · recto</div><div><div class="g" style="font-size:22px;font-weight:900;line-height:1.05;letter-spacing:-.04em">Avant de signer le bail :<br>240 €, deux heures,<br>une architecte sur place.</div><div class="m" style="font-size:11px;color:var(--muted);margin-top:8px">Vous saurez ce que vous achetez.</div></div></div>
+  </div>
+  <h3 class="g" style="font-size:22px;color:var(--navy);margin:34px 0 12px">Réseaux : le mur de la semaine</h3>
+  <div class="social">
+    <div class="sq" style="background:var(--terra);color:#fff"><div class="m s">Le mur de la semaine · 12/54</div><div class="t g">« La mairie compte 30 couverts. J'en ai 48. »</div><div class="s">Calcul de l'effectif admissible → <strong>ça passe</strong>, ou on sait pourquoi pas.</div></div>
+    <div class="sq" style="background:var(--navy);color:#fff"><div class="m s">Avant / après · dossier livré</div><div class="t g">Une devanture, trois semaines, un oui.</div><div class="s">Photo façade, plan coté par-dessus, tampon.</div></div>
+    <div class="sq" style="background:var(--sand);color:var(--navy)"><div class="m s">Vrai / faux</div><div class="t g">« Une terrasse, c'est juste des tables dehors. »</div><div class="s">Faux. C'est une occupation du domaine public. On explique en 5 lignes.</div></div>
+  </div>
+</div></section>
+
+<section id="ton"><div class="wrap">
+  <p class="num m">07 — Le ton</p>
+  <h2 class="g">Direct, précis, rassurant. Jamais au-dessus.</h2>
+  <div class="dont">
+    <div class="card"><h3>On dit</h3><p>« Votre hotte rejette en façade, à 2 m de la fenêtre du voisin. Le règlement demande 8 m ou un rejet en toiture. Voilà les deux solutions et ce qu'elles coûtent. »</p><p style="margin-top:10px">« Ça passe » quand ça passe. « Ça ne passe pas en l'état, voilà pourquoi » quand ça ne passe pas.</p></div>
+    <div class="card no"><h3>On ne dit pas</h3><p>« Notre expertise pluridisciplinaire vous accompagne dans la sécurisation réglementaire de votre projet. »</p><p style="margin-top:10px">« Dossier garanti accepté. » · « Architecture d'intérieur haut de gamme. » · « Leader de… »</p></div>
+  </div>
+  <div class="card" style="margin-top:18px"><h3>Vous ou tu ?</h3><p><strong>Vous.</strong> La marque parle à un patron de restaurant de 25 ans comme à un patron de 60 ans, à un kebab comme à une table étoilée. Le vouvoiement direct, phrases courtes, est le seul registre qui passe partout. Le livrable Warsha proposait le tutoiement pour une cible 25-45 ans : c'est précisément le ciblage qu'on refuse. Décision à prendre, mais la recommandation est claire.</p></div>
+</div></section>
+
+<section id="deploiement"><div class="wrap">
+  <p class="num m">08 — Déploiement</p>
+  <h2 class="g">Dans l'ordre.</h2>
+  <div class="steps">
+    <div class="step"><b class="g">1</b><h3>Identité</h3><p>Logo porte, palette, typo, tampon, gabarits de cotes. Charte en 12 pages. Deux semaines.</p></div>
+    <div class="step"><b class="g">2</b><h3>Site</h3><p>Accueil « qu'est-ce qui bloque ? », 10 fiches d'entrée au gabarit ci-dessus, le catalogue derrière, tunnel de commande. Les 44 autres fiches suivent au même gabarit.</p></div>
+    <div class="step"><b class="g">3</b><h3>Contenu</h3><p>Une fiche = une page qui répond à une recherche Google formulée comme le restaurateur la tape. « Le mur de la semaine » : un post, un mur, un tampon, chaque semaine, 54 semaines de contenu déjà écrit par le catalogue.</p></div>
+    <div class="step"><b class="g">4</b><h3>Terrain</h3><p>Cartes à poser chez ceux qui voient le restaurateur avant nous : fournisseurs, comptables, cabinets de cession, assureurs. Shooting dans de vrais restaurants pour la banque d'images.</p></div>
+  </div>
+  <p class="muted" style="margin-top:22px;max-width:820px">Ce qui ne change pas quand le réseau grandit : la question d'accueil, le tampon, la cote, le prix fixe affiché, le nom de qui signe. Ce qui s'ajoute : des visages d'architectes partenaires sur les fiches, une par région, même gabarit.</p>
+</div></section>
+
+<footer><div class="wrap">Restoplan — direction artistique, octobre 2026. S'appuie sur le Brand DNA (territoire « Le Passage »), le catalogue des 54 services et le P&L. Maquettes indicatives, construites en CSS pour montrer le système ; les visuels définitifs se font sur de vraies photos de restaurants.</div></footer>
+</body>
+</html>
