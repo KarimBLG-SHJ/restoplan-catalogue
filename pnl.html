@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Restoplan — P&L simple</title>
+<style>
+  :root{--navy:#0f1b2d;--terracotta:#c7653d;--sand:#f6efe6;--cream:#fffaf3;--ink:#1d2430;--muted:#697386;--line:#e6dccf;--white:#fff;--green:#2e7d4f;--red:#b43a3a}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header{background:var(--navy);color:var(--white);padding:40px 0 30px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px;margin-bottom:20px}
+  .brand-mark{width:34px;height:34px;border-radius:10px;border:2px solid var(--terracotta);display:grid;place-items:center;color:var(--terracotta);font-weight:900}
+  header h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.05em;line-height:1.05;margin:0 0 10px}
+  header p{color:rgba(255,255,255,.78);max-width:720px;margin:0;font-size:16px}
+  main{padding:30px 0 60px}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px}
+  .panel h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--terracotta);margin:0 0 14px}
+  .panel h2:not(:first-child){margin-top:22px}
+  .f{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;margin-bottom:10px;font-size:14px}
+  .f label{color:#3e4858}
+  .f small{display:block;color:var(--muted);font-size:12px}
+  .f input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:700;color:var(--navy);text-align:right}
+  .f input:focus{outline:2px solid var(--terracotta);outline-offset:1px}
+  .f3{display:grid;grid-template-columns:1fr 70px 70px 70px;gap:6px;align-items:center;margin-bottom:10px;font-size:14px}
+  .f3 input{width:100%;padding:8px 6px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:700;color:var(--navy);text-align:right}
+  .f3 .y{font-size:11px;color:var(--muted);text-align:center;font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  thead th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  tr.sub td{color:var(--muted);font-size:13.5px;padding-left:22px}
+  tr.tot td{font-weight:800;color:var(--navy);background:var(--sand)}
+  tr.big td{font-weight:900;font-size:17px;color:var(--navy)}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  .kpi{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .kpi b{display:block;font-size:26px;letter-spacing:-.04em;color:var(--navy);line-height:1.1}
+  .kpi span{font-size:12.5px;color:var(--muted)}
+  .note{font-size:13px;color:var(--muted);margin-top:16px}
+  .reset{margin-top:18px;font-size:13px;background:none;border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;color:var(--navy);font-weight:700}
+  .reset:hover{border-color:var(--terracotta);color:var(--terracotta)}
+  a{color:var(--terracotta)}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
+  @media print{header{-webkit-print-color-adjust:exact;print-color-adjust:exact}.reset{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><span class="brand-mark">R</span> Restoplan</div>
+  <h1>P&L simple sur trois ans</h1>
+  <p>Une seule idée : combien de commandes par mois, à quel panier, en gardant quelle marge, pour couvrir quelles charges. Tout est modifiable, tout se recalcule. Hors taxes. Valeurs par défaut = scénario central du business plan.</p>
+</div></header>
+
+<main class="wrap">
+<div class="kpis" id="kpis"></div>
+<div class="grid">
+  <aside class="panel" id="inputs">
+    <h2>Volume</h2>
+    <div class="f3"><div></div><div class="y">An 1</div><div class="y">An 2</div><div class="y">An 3</div></div>
+    <div class="f3"><label>Commandes / mois</label><input data-k="cmd1" type="number" min="0" step="1"><input data-k="cmd2" type="number" min="0" step="1"><input data-k="cmd3" type="number" min="0" step="1"></div>
+    <div class="f"><label>Panier moyen HT<small>€ par commande</small></label><input data-k="panier" type="number" min="0" step="10"></div>
+
+    <h2>Marge</h2>
+    <div class="f"><label>Part reversée à l'expert<small>% du prix client</small></label><input data-k="expert" type="number" min="0" max="100" step="1"></div>
+    <div class="f"><label>Frais de paiement<small>% du CA</small></label><input data-k="paiement" type="number" min="0" max="20" step="0.1"></div>
+    <div class="f"><label>Marketing<small>% du CA</small></label><input data-k="mkt" type="number" min="0" max="100" step="0.5"></div>
+
+    <h2>Charges fixes / mois</h2>
+    <div class="f"><label>Shopify & logiciels</label><input data-k="soft" type="number" min="0" step="50"></div>
+    <div class="f"><label>Assurance & juridique</label><input data-k="juri" type="number" min="0" step="50"></div>
+    <div class="f"><label>Support & opérations</label><input data-k="ops" type="number" min="0" step="50"></div>
+    <div class="f3"><label>Rémunération fondateur</label><input data-k="fond1" type="number" min="0" step="100"><input data-k="fond2" type="number" min="0" step="100"><input data-k="fond3" type="number" min="0" step="100"></div>
+
+    <button class="reset" id="reset">Revenir au scénario central</button>
+    <p class="note">Hypothèses du BP : 65 % expert / 35 % Restoplan, paiement ≈ 2,2 %, marketing ≈ 8 % du CA. Le catalogue des prestations est <a href="index.html">ici</a>.</p>
+  </aside>
+
+  <section class="panel">
+    <table id="pl"></table>
+    <p class="note" id="be"></p>
+  </section>
+</div>
+</main>
+
+<script>
+const DEF={cmd1:20,cmd2:26,cmd3:35,panier:990,expert:65,paiement:2.2,mkt:8,soft:300,juri:600,ops:850,fond1:2000,fond2:3000,fond3:4000};
+const KEY="restoplan-pnl";
+const $=s=>document.querySelector(s);
+const inputs=[...document.querySelectorAll("#inputs input")];
+const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
+const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
+const pct=n=>(n*100).toLocaleString("fr-FR",{maximumFractionDigits:1})+" %";
+const cls=n=>n<0?"neg":"pos";
+
+function load(){let v={};try{v=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+  inputs.forEach(i=>i.value=v[i.dataset.k]??DEF[i.dataset.k]);}
+function read(){const v={};inputs.forEach(i=>v[i.dataset.k]=Number(i.value)||0);return v;}
+
+function calc(){
+  const v=read();
+  try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}
+  const years=[1,2,3].map(y=>{
+    const cmd=v["cmd"+y]*12, ca=cmd*v.panier;
+    const prod=ca*v.expert/100, mb=ca-prod;
+    const pay=ca*v.paiement/100, mkt=ca*v.mkt/100;
+    const soft=v.soft*12, juri=v.juri*12, ops=v.ops*12, fond=v["fond"+y]*12;
+    const charges=pay+mkt+soft+juri+ops+fond;
+    const ebitda=mb-charges;
+    const fixes=soft+juri+ops+fond;
+    const contribPerCmd=v.panier*(1-v.expert/100-v.paiement/100-v.mkt/100);
+    const be=contribPerCmd>0?fixes/12/contribPerCmd:Infinity;
+    return {cmd,ca,prod,mb,pay,mkt,soft,juri,ops,fond,charges,ebitda,be,contribPerCmd};
+  });
+  const row=(label,f,c="")=>`<tr class="${c}"><td>${label}</td>${years.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
+  $("#pl").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
+    ${row("Commandes / an",y=>y.cmd.toLocaleString("fr-FR"))}
+    ${row("Chiffre d'affaires HT",y=>k(y.ca),"tot")}
+    ${row("Reversé aux experts",y=>"−"+k(y.prod),"sub")}
+    ${row("Marge brute",y=>k(y.mb)+` <span style="color:var(--muted);font-weight:500">(${pct(y.ca?y.mb/y.ca:0)})</span>`,"tot")}
+    ${row("Frais de paiement",y=>"−"+k(y.pay),"sub")}
+    ${row("Marketing",y=>"−"+k(y.mkt),"sub")}
+    ${row("Shopify & logiciels",y=>"−"+k(y.soft),"sub")}
+    ${row("Assurance & juridique",y=>"−"+k(y.juri),"sub")}
+    ${row("Support & opérations",y=>"−"+k(y.ops),"sub")}
+    ${row("Rémunération fondateur",y=>"−"+k(y.fond),"sub")}
+    ${row("EBITDA",y=>`<span class="${cls(y.ebitda)}">${k(y.ebitda)}</span>`,"big")}
+    ${row("Marge EBITDA",y=>`<span class="${cls(y.ebitda)}">${pct(y.ca?y.ebitda/y.ca:0)}</span>`)}
+    ${row("Point mort (commandes / mois)",y=>isFinite(y.be)?Math.ceil(y.be):"—")}
+  </tbody>`;
+  const cum=years.reduce((a,y)=>({ca:a.ca+y.ca,e:a.e+y.ebitda}),{ca:0,e:0});
+  $("#kpis").innerHTML=`
+    <div class="kpi"><b>${k(cum.ca)}</b><span>CA cumulé sur 3 ans</span></div>
+    <div class="kpi"><b class="${cls(cum.e)}">${k(cum.e)}</b><span>EBITDA cumulé sur 3 ans</span></div>
+    <div class="kpi"><b>${eur(years[0].contribPerCmd)}</b><span>ce qu'une commande laisse à Restoplan après expert, paiement et marketing</span></div>`;
+  $("#be").textContent=`Point mort : nombre de commandes par mois nécessaire pour que la marge couvre exactement les charges fixes de l'année. En dessous, Restoplan perd de l'argent chaque mois ; au-dessus, chaque commande supplémentaire rapporte ${eur(years[0].contribPerCmd)} de contribution.`;
+}
+inputs.forEach(i=>i.addEventListener("input",calc));
+$("#reset").addEventListener("click",()=>{inputs.forEach(i=>i.value=DEF[i.dataset.k]);calc();});
+load();calc();
+</script>
+</body>
+</html>
