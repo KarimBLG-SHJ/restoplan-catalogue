@@ -77,10 +77,10 @@
 <header><div class="wrap">
   <div class="brand"><span class="brand-mark">R</span> Restoplan</div>
   <h1>Business plan : marché, prix, et ce qu'on vise</h1>
-  <p>D'abord ce qu'on sait du marché et comment chaque prix a été fixé. Ensuite un P&L simple : une part du marché français que l'on vise, plus les projets que le réseau halal apporte en direct. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
+  <p>D'abord ce qu'on sait du marché et comment chaque prix a été fixé. Ensuite un P&L construit par cohortes : des contacts qui arrivent, une part qui commande, une part qui rachète, puis seulement à la fin la part du marché français que cela représente. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
 </div></header>
 <nav class="toc"><div class="wrap">
-  <a href="#marche">A. Le marché</a><a href="#prix">B. Les prix</a><a href="#vise">1. Ce qu'on vise</a><a href="#mix">2. Mix de services</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#n">5. À N clients</a><a href="#leads">6. Vérification</a><a href="index.html">Catalogue</a>
+  <a href="#marche">A. Le marché</a><a href="#prix">B. Les prix</a><a href="#vise">1. Cohortes</a><a href="#mix">2. Mix de services</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#n">5. À N clients</a><a href="index.html">Catalogue</a>
 </div></nav>
 
 <main class="wrap">
@@ -116,25 +116,37 @@
 
 <section id="vise">
   <p class="eyebrow">P&L</p>
-  <h2>1. Ce qu'on vise : une part du marché, plus le réseau halal</h2>
-  <p class="lead">Deux sources de projets. Le marché diffus : une part en pourcentage des projets uniques du bloc A, gagnée par le site, le SEO et la recommandation. Le réseau halal : des projets apportés en direct par la relation, comptés en nombre et non en pourcentage, parce qu'ils ne dépendent pas du marketing. Chaque projet achète en moyenne plus d'une prestation.</p>
+  <h2>1. Les cohortes : des contacts aux commandes</h2>
+  <p class="lead">Deux sources de contacts. Le marché diffus : site, SEO, recommandation, avec un coût par lead. Le réseau halal : 3 à 4 masters franchisés, 150 à 200 restaurants, des contacts qui ne coûtent rien en acquisition et convertissent mieux. Chaque nouveau client passe une première commande, une part rachète dans l'année, et une part des clients de l'année précédente revient.</p>
   <div class="panel">
     <table id="vt"><thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
-      <tr><td>Part du marché diffus visée (%)</td><td><input data-v="s1" type="number" min="0" max="100" step="0.05"></td><td><input data-v="s2" type="number" min="0" max="100" step="0.05"></td><td><input data-v="s3" type="number" min="0" max="100" step="0.05"></td></tr>
-      <tr class="sub" id="vDiff"><td>Projets gagnés sur le marché diffus</td><td></td><td></td><td></td></tr>
-      <tr><td>Projets apportés par le réseau halal</td><td><input data-v="h1" type="number" min="0" step="5"></td><td><input data-v="h2" type="number" min="0" step="5"></td><td><input data-v="h3" type="number" min="0" step="5"></td></tr>
-      <tr class="tot" id="vProj"><td>Projets gagnés</td><td></td><td></td><td></td></tr>
-      <tr><td>Prestations payées par projet</td><td colspan="3" style="text-align:left"><input data-v="ppp" type="number" min="0.5" max="5" step="0.1" style="width:84px"> <span class="muted">une reprise achète souvent diagnostic + plans + DP</span></td></tr>
+      <tr class="cat"><td colspan="4">Marché diffus</td></tr>
+      <tr><td>Leads par mois</td><td><input data-v="ld1" type="number" min="0" step="5"></td><td><input data-v="ld2" type="number" min="0" step="5"></td><td><input data-v="ld3" type="number" min="0" step="5"></td></tr>
+      <tr><td>Part qui commande (%)</td><td><input data-v="cd1" type="number" min="0" max="100" step="1"></td><td><input data-v="cd2" type="number" min="0" max="100" step="1"></td><td><input data-v="cd3" type="number" min="0" max="100" step="1"></td></tr>
+      <tr class="sub" id="vNewD"><td>Nouveaux clients marché diffus</td><td></td><td></td><td></td></tr>
+      <tr class="cat"><td colspan="4">Réseau halal</td></tr>
+      <tr><td>Leads par mois</td><td><input data-v="ln1" type="number" min="0" step="1"></td><td><input data-v="ln2" type="number" min="0" step="1"></td><td><input data-v="ln3" type="number" min="0" step="1"></td></tr>
+      <tr><td>Part qui commande (%)</td><td><input data-v="cn1" type="number" min="0" max="100" step="1"></td><td><input data-v="cn2" type="number" min="0" max="100" step="1"></td><td><input data-v="cn3" type="number" min="0" max="100" step="1"></td></tr>
+      <tr class="sub" id="vNewN"><td>Nouveaux clients réseau</td><td></td><td></td><td></td></tr>
+      <tr class="tot" id="vNew"><td>Nouveaux clients</td><td></td><td></td><td></td></tr>
+      <tr class="cat"><td colspan="4">Ce qu'un client achète</td></tr>
+      <tr><td>Prestations dans la première commande</td><td colspan="3" style="text-align:left"><input data-v="pp1" type="number" min="1" max="5" step="0.1" style="width:84px"> <span class="muted">une reprise achète souvent diagnostic + plans + DP</span></td></tr>
+      <tr><td>Part des nouveaux clients qui rachètent dans l'année (%)</td><td colspan="3" style="text-align:left"><input data-v="rb" type="number" min="0" max="100" step="1" style="width:84px"> <span class="muted">la terrasse amène l'enseigne, le diagnostic amène les plans</span></td></tr>
+      <tr><td>Part des clients de l'année précédente qui reviennent (%)</td><td colspan="3" style="text-align:left"><input data-v="rt" type="number" min="0" max="100" step="1" style="width:84px"> <span class="muted">nouveau projet, contrôle, deuxième restaurant</span></td></tr>
+      <tr><td>Prestations par rachat ou retour</td><td colspan="3" style="text-align:left"><input data-v="ppr" type="number" min="1" max="5" step="0.1" style="width:84px"></td></tr>
+      <tr class="sub" id="vCmdNew"><td>Commandes des nouveaux clients</td><td></td><td></td><td></td></tr>
+      <tr class="sub" id="vCmdRet"><td>Commandes des clients qui reviennent</td><td></td><td></td><td></td></tr>
       <tr class="tot" id="vCmd"><td>Commandes</td><td></td><td></td><td></td></tr>
-      <tr class="sub" id="vHal"><td>Part du volume venant du réseau halal</td><td></td><td></td><td></td></tr>
+      <tr class="sub" id="vHal"><td>Part des nouveaux clients venant du réseau</td><td></td><td></td><td></td></tr>
+      <tr class="sub" id="vShare"><td>Part du marché français (62 k / 35 k)</td><td></td><td></td><td></td></tr>
     </tbody></table>
-    <p class="note">Réseau halal : 3 à 4 masters franchisés, soit 150 à 200 restaurants. Hypothèse de départ : 20 % d'entre eux ont un projet dans l'année, soit 30 à 40, sans Google Ads ni SEO. Compté en nombre fixe : il accélère le démarrage, il ne doit pas porter le projet à l'an 3. C'est aussi le laboratoire : conversion, panier, prestations par client, réachat et heures réellement passées se mesurent d'abord là.</p>
+    <p class="note">La part de marché est un résultat, pas une cible : nouveaux clients ÷ projets uniques du bloc A. Le réseau est le laboratoire : conversion, panier, rachat et heures par commande se mesurent d'abord là, puis remplacent ces hypothèses.</p>
   </div>
 </section>
 
 <section id="mix">
   <h2>2. Le mix de services : panier moyen et saison</h2>
-  <p class="lead">Les 54 services avec un poids relatif : ce que les commandes contiennent, en proportion. Le poids donne le panier moyen et, avec le profil de saison, la répartition dans l'année. Le volume, lui, vient du bloc 1. La colonne « Cmd an 1 » montre ce que ça donne service par service.</p>
+  <p class="lead">Les 54 services avec un poids relatif : ce que les commandes contiennent, en proportion. Le poids donne le panier moyen et, avec le profil de saison, la répartition dans l'année. Le volume, lui, vient des cohortes du bloc 1. La colonne « Cmd an 1 » montre ce que ça donne service par service.</p>
   <div class="panel">
     <table id="t"><thead><tr><th>Service</th><th class="hide-m">Prix HT</th><th>Poids</th><th>Quand</th><th>Cmd an 1</th><th>CA an 1</th></tr></thead><tbody></tbody></table>
     <div class="actions"><button id="resetS">Revenir au mix de départ</button></div>
@@ -152,7 +164,7 @@
     <label class="pf">Coût horaire de production<small>€ / h ; 0 = non compté</small><input data-k="hcost" type="number" min="0" step="5"></label>
     <label class="pf">Sous-traitance externe<small>% du prix client reversé</small><input data-k="expert" type="number" min="0" max="100" step="1"></label>
     <label class="pf">Frais de paiement<small>% du CA</small><input data-k="paiement" type="number" min="0" max="20" step="0.1"></label>
-    <label class="pf">Marketing<small>% du CA du marché diffus</small><input data-k="mkt" type="number" min="0" max="100" step="0.5"></label>
+    <label class="pf">Coût par lead marché diffus<small>€ par contact : SEO, contenu, pub, outils</small><input data-k="cpl" type="number" min="0" step="5"></label>
     <label class="pf">Serveurs & abonnements<small>€ / mois</small><input data-k="soft" type="number" min="0" step="50"></label>
     <label class="pf">Assurance & juridique<small>€ / mois</small><input data-k="juri" type="number" min="0" step="50"></label>
     <label class="pf">Support & opérations<small>€ / mois</small><input data-k="ops" type="number" min="0" step="50"></label>
@@ -161,26 +173,17 @@
 
 <section id="pl">
   <h2>4. P&L trois ans</h2>
-  <p class="lead">Volume du bloc 1, panier du bloc 2, charges du bloc 3. Le marketing ne s'applique qu'au chiffre d'affaires du marché diffus : le réseau halal ne coûte pas en acquisition.</p>
+  <p class="lead">Commandes du bloc 1, panier du bloc 2, charges du bloc 3. Le marketing = leads du marché diffus × coût par lead ; le réseau halal ne coûte rien en acquisition.</p>
   <div class="panel"><table id="plt"></table><p class="note" id="be"></p></div>
 </section>
 
 <section id="n">
   <h2>5. Ce que ça rapporte au propriétaire à 50, 100, 250, 500, 1 000 clients</h2>
-  <p class="lead">La vraie question n'est pas la taille du marché, c'est : peut-on servir N clients par an de façon rentable ? Même panier, mêmes prestations par projet et mêmes charges que ci-dessus. Les premiers clients viennent du réseau (sans marketing), les suivants du marché diffus. Le chiffre à regarder est le dernier : ce que chaque heure de production rapporte au propriétaire une fois tout payé, sauf lui.</p>
+  <p class="lead">La vraie question n'est pas la taille du marché, c'est : peut-on servir N clients par an de façon rentable ? Même panier, mêmes prestations par projet et mêmes charges que ci-dessus. Les premiers clients viennent du réseau (sans marketing), les suivants du marché diffus au coût par lead du bloc 3. Le chiffre à regarder est le dernier : ce que chaque heure de production rapporte au propriétaire une fois tout payé, sauf lui.</p>
   <div class="panel"><table id="nt"></table>
   <p class="note" id="nnote"></p></div>
 </section>
 
-<section id="leads">
-  <h2>6. Vérification par les contacts entrants</h2>
-  <p class="lead">Le bloc 1 part d'une part de marché. Ce bloc part d'autre chose : les gens qui nous contactent, ce qu'ils demandent, quelle part achète. On obtient un second nombre de commandes par mois. S'il est proche de celui du bloc 1, l'hypothèse tient. S'il est bien plus bas, il faudra plus de contacts, ou mieux convertir.</p>
-  <div class="panel">
-    <div class="check" id="check"></div>
-    <table id="mt"><thead><tr><th>La demande, telle qu'elle arrive</th><th>Part des leads</th><th>Qui commande</th><th>Montant HT</th><th>Cmd / mois</th><th>CA / mois</th></tr></thead><tbody></tbody></table>
-    <div class="actions"><button id="resetM">Revenir au mix de départ</button></div>
-  </div>
-</section>
 </main>
 
 <script src="catalogue.js"></script>
@@ -201,23 +204,9 @@ const DEF_MK={rows:[
  ["Travaux significatifs du parc existant",10800,17000,23400,"Extrapolation (6–13 % du parc)"],
  ["Terrasse, enseigne, façade, destination hors projet plus large",5000,9000,15000,"Extrapolation forte"],
  ["Contrôles et injonctions générant un aménagement",500,1100,2000,"Extrapolation forte"]]};
-const DEF_V={s1:0.2,s2:0.3,s3:0.45,h1:40,h2:40,h3:40,ppp:1.4};
-const DEF_P={expert:0,paiement:2.2,mkt:10,soft:300,juri:600,ops:850,hcmd:6,hetp:1400,hcost:0};
-const DEF_M={leads:60,rows:[
- ["Curieux, pas de projet daté, hors France ou hors périmètre","Rien. On répond, on garde le contact.",30,0,0],
- ["« J'aimerais l'avis d'un pro avant de me lancer »","Visite sur place 2 h",10,50,240],
- ["« Je veux une terrasse »","Plan terrasse + dossier AOT",10,60,1000],
- ["« Je change ma devanture / mon enseigne »","Déclaration préalable + enseigne",9,50,1860],
- ["« Ma hotte n'est pas aux normes »","Dimensionnement extraction",8,45,1400],
- ["« Je reprends un resto, qu'est-ce qui n'est pas aux normes ? »","Diagnostic conformité + relevé",8,45,1920],
- ["« J'ai une amende PMR / mes WC ne passent pas »","Diagnostic accessibilité + dérogation",6,60,750],
- ["« La mairie me demande un dossier ERP »","Autorisation de travaux ERP",5,37,3750],
- ["« Je monte ma cuisine pro »","Plan technique cuisine",3,30,9000],
- ["« Je veux casser un mur »","Étude de structure",3,37,1625],
- ["« Mon local n'est pas classé restaurant »","Changement de destination",3,37,1200],
- ["« Les voisins se plaignent du bruit »","Diagnostic acoustique",2,37,2300],
- ["« Mes devis sont-ils cohérents ? »","Analyse de devis + visite",3,45,720]]};
-const KEY="restoplan-v9";
+const DEF_V={ld1:40,ld2:55,ld3:75,cd1:25,cd2:28,cd3:30,ln1:7,ln2:6,ln3:5,cn1:50,cn2:50,cn3:50,pp1:1.4,rb:25,rt:15,ppr:1.2};
+const DEF_P={expert:0,paiement:2.2,cpl:40,soft:300,juri:600,ops:850,hcmd:6,hetp:1400,hcost:0};
+const KEY="restoplan-v10";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -233,7 +222,7 @@ function load(){try{st=JSON.parse(localStorage.getItem(KEY))}catch(e){} if(!st) 
   if(!st.mk||!st.mk.rows) st.mk=clone(DEF_MK);
   st.v=Object.assign(clone(DEF_V),st.v||{});
   st.p=Object.assign(clone(DEF_P),st.p||{});
-  if(!st.m||!st.m.rows) st.m=clone(DEF_M);}
+}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 function keepFocus(fn){const a=document.activeElement,d=a&&a.dataset||{};
   const q=d.k?`[data-k="${d.k}"]`:d.v?`[data-v="${d.v}"]`:d.mki!==undefined?`[data-mki="${d.mki}"]`:d.i!==undefined?`${a.tagName.toLowerCase()}[data-i="${d.i}"]${d.j?`[data-j="${d.j}"]`:""}`:null;
@@ -253,14 +242,19 @@ function render(){
   let wsum=0,wca=0; ITEMS.forEach((it,i)=>{wsum+=st.s[i][0]; wca+=st.s[i][0]*price(it);});
   const panier=wsum?wca/wsum:0;
 
-  // 1. visé
+  // 1. cohortes
   const v=st.v; setVals("#vt input",v);
-  const diff=[v.s1,v.s2,v.s3].map(s=>proj*s/100), hal=[v.h1,v.h2,v.h3];
-  const projs=diff.map((d,i)=>d+hal[i]), cmds=projs.map(p=>p*v.ppp);
-  fill("#vDiff",diff.map(n0)); fill("#vProj",projs.map(n0));
+  const newD=[1,2,3].map(y=>v["ld"+y]*12*v["cd"+y]/100), newN=[1,2,3].map(y=>v["ln"+y]*12*v["cn"+y]/100);
+  const news=newD.map((d,i)=>d+newN[i]), leadsD=[1,2,3].map(y=>v["ld"+y]*12);
+  let prevClients=0; const cmdNew=[],cmdRet=[],cmds=[],clientsCum=[];
+  news.forEach((n,i)=>{const cn=n*v.pp1+n*v.rb/100*v.ppr, cr=prevClients*v.rt/100*v.ppr; cmdNew.push(cn); cmdRet.push(cr); cmds.push(cn+cr); prevClients+=n; clientsCum.push(prevClients);});
+  const prudent=mk.rows.slice(0,2).reduce((a,r)=>a+r[2],0);
+  fill("#vNewD",newD.map(n0)); fill("#vNewN",newN.map(n0)); fill("#vNew",news.map(n0));
+  fill("#vCmdNew",cmdNew.map(n0)); fill("#vCmdRet",cmdRet.map(n0));
   fill("#vCmd",cmds.map(c=>n0(c)+` <span class="muted" style="font-weight:500">(${n1(c/12)} / mois)</span>`));
-  fill("#vHal",projs.map((p,i)=>p?pct(hal[i]/p):"—"));
-  const cmd=cmds[0];
+  fill("#vHal",news.map((n,i)=>n?pct(newN[i]/n):"—"));
+  fill("#vShare",news.map(n=>`${proj?pct(n/proj):"—"} <span class="muted">/ ${prudent?pct(n/prudent):"—"}</span>`));
+  const cmd=cmds[0], hal=newN;
 
   // 2. table + chart (an 1)
   const tb=$("#t tbody"); tb.innerHTML=""; const monthly=Array(12).fill(0);
@@ -279,19 +273,20 @@ function render(){
 
   // 3+4. P&L
   const p=st.p; setVals("#params input",p);
-  const years=cmds.map((c,i)=>{const r=c*panier,rDiff=diff[i]*v.ppp*panier,prod=r*p.expert/100,mb=r-prod,pay=r*p.paiement/100,mkt=rDiff*p.mkt/100,soft=p.soft*12,juri=p.juri*12,ops=p.ops*12;
+  const years=cmds.map((c,i)=>{const r=c*panier,prod=r*p.expert/100,mb=r-prod,pay=r*p.paiement/100,mkt=leadsD[i]*p.cpl,soft=p.soft*12,juri=p.juri*12,ops=p.ops*12;
     const hours=c*p.hcmd,etp=p.hetp?hours/p.hetp:0,tcost=hours*p.hcost;
     const ebitda=mb-pay-mkt-soft-juri-ops-tcost,contrib=panier*(1-p.expert/100-p.paiement/100)-p.hcmd*p.hcost,be=contrib>0?(soft+juri+ops)/12/contrib:Infinity;
     return {c,r,prod,mb,pay,mkt,soft,juri,ops,hours,etp,tcost,ebitda,be,contrib};});
   const row=(l,f,c="")=>`<tr class="${c}"><td>${l}</td>${years.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
   $("#plt").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
+    ${row("Nouveaux clients",(y,i)=>n0(news[years.indexOf(y)]))}
     ${row("Commandes",y=>n0(y.c))}
     ${row("Panier moyen",()=>eur(panier),"sub")}
     ${row("Chiffre d'affaires HT",y=>k(y.r),"tot")}
     ${row("Sous-traitance externe",y=>"−"+k(y.prod),"sub")}
     ${row("Marge brute",y=>k(y.mb)+` <span class="muted" style="font-weight:500">(${pct(y.r?y.mb/y.r:0)})</span>`,"tot")}
     ${row("Frais de paiement",y=>"−"+k(y.pay),"sub")}
-    ${row("Marketing (marché diffus)",y=>"−"+k(y.mkt),"sub")}
+    ${row("Marketing (leads × coût par lead)",y=>"−"+k(y.mkt),"sub")}
     ${row("Serveurs & abonnements",y=>"−"+k(y.soft),"sub")}
     ${row("Assurance & juridique",y=>"−"+k(y.juri),"sub")}
     ${row("Support & opérations",y=>"−"+k(y.ops),"sub")}
@@ -302,15 +297,15 @@ function render(){
     ${row("Point mort (commandes / mois)",y=>isFinite(y.be)?Math.ceil(y.be):"—")}</tbody>`;
   $("#be").textContent=`Point mort : commandes par mois pour que la marge couvre les charges fixes, hors marketing. Chaque commande laisse ${eur(years[0].contrib)} après sous-traitance, paiement${p.hcost?" et coût du temps":""}. ETP = équivalent temps plein nécessaire à la production, à ${n0(p.hetp)} h productives par an.`;
   const cum=years.reduce((a,y)=>({r:a.r+y.r,e:a.e+y.ebitda}),{r:0,e:0});
-  $("#kpis").innerHTML=`<div class="kpi"><b>${n0(proj)}</b><span>projets / an sur le marché français</span></div>
-    <div class="kpi"><b>${pct(v.s1/100)}</b><span>part du marché diffus visée an 1, + ${hal[0]} projets réseau halal</span></div>
+  $("#kpis").innerHTML=`<div class="kpi"><b>${n0(leadsD[0]/12+v.ln1)}</b><span>leads / mois an 1, dont ${v.ln1} du réseau halal</span></div>
+    <div class="kpi"><b>${n0(news[0])}</b><span>nouveaux clients an 1 = ${proj?pct(news[0]/proj):"—"} du marché (${prudent?pct(news[0]/prudent):"—"} du socle prudent)</span></div>
     <div class="kpi"><b>${n0(cmd)}</b><span>commandes an 1, panier ${eur(panier)} · ${n1(years[0].etp)} ETP de production</span></div>
     <div class="kpi"><b>${k(years[0].r)}</b><span>CA HT an 1 · EBITDA <span class="${cls(years[0].ebitda)}">${k(years[0].ebitda)}</span></span></div>
     <div class="kpi"><b class="${cls(cum.e)}">${k(cum.e)}</b><span>EBITDA cumulé 3 ans, sur ${k(cum.r)} de CA</span></div>`;
 
   // 5. N clients
-  const NS=[50,100,250,500,1000], mkTotal=proj, prudent=mk.rows.slice(0,2).reduce((a,r)=>a+r[2],0);
-  const nrows=NS.map(N=>{const c=N*v.ppp,r=c*panier,net=Math.max(0,N-hal[0]),rD=net*v.ppp*panier,pay=r*p.paiement/100,mkt=rD*p.mkt/100,fix=(p.soft+p.juri+p.ops)*12,prod=r*p.expert/100,hours=c*p.hcmd,res=r-prod-pay-mkt-fix,resH=hours?res/hours:0;
+  const NS=[50,100,250,500,1000], mkTotal=proj, cpc=v.pp1+v.rb/100*v.ppr;
+  const nrows=NS.map(N=>{const c=N*cpc,r=c*panier,net=Math.max(0,N-hal[0]),pay=r*p.paiement/100,mkt=v.cd1?net/(v.cd1/100)*p.cpl:0,fix=(p.soft+p.juri+p.ops)*12,prod=r*p.expert/100,hours=c*p.hcmd,res=r-prod-pay-mkt-fix,resH=hours?res/hours:0;
     return {N,c,r,pay,mkt,fix,prod,hours,etp:p.hetp?hours/p.hetp:0,res,resH,sh:mkTotal?N/mkTotal:0,shp:prudent?N/prudent:0};});
   const nrow=(l,f,c="")=>`<tr class="${c}"><td>${l}</td>${nrows.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
   $("#nt").innerHTML=`<thead><tr><th>Clients / an</th>${NS.map(N=>`<th>${n0(N)}</th>`).join("")}</tr></thead><tbody>
@@ -318,7 +313,7 @@ function render(){
     ${nrow("Chiffre d'affaires HT",y=>k(y.r),"tot")}
     ${nrow("Sous-traitance",y=>"−"+k(y.prod),"sub")}
     ${nrow("Paiement",y=>"−"+k(y.pay),"sub")}
-    ${nrow("Marketing (au-delà du réseau)",y=>"−"+k(y.mkt),"sub")}
+    ${nrow("Marketing (leads nécessaires au-delà du réseau × coût par lead)",y=>"−"+k(y.mkt),"sub")}
     ${nrow("Charges fixes",y=>"−"+k(y.fix),"sub")}
     ${nrow("Résultat avant rémunération",y=>`<span class="${cls(y.res)}">${k(y.res)}</span>`,"tot")}
     ${nrow("Heures de production",y=>n0(y.hours)+" h")}
@@ -326,28 +321,15 @@ function render(){
     ${nrow("Résultat par heure de production",y=>`<span class="${cls(y.resH)}">${eur(y.resH)} / h</span>`,"big")}
     ${nrow("Part du marché (62 k / 35 k)",y=>`${pct(y.sh)} <span class="muted">/ ${pct(y.shp)}</span>`,"sub")}</tbody>`;
   $("#nnote").textContent=`Lecture : à ${n0(p.hcmd)} h par commande, le résultat par heure est ce que le propriétaire gagne de l'heure s'il produit tout lui-même, ou ce qu'il peut payer un architecte salarié tout en restant à l'équilibre. Si ce chiffre est proche d'un taux horaire d'architecte classique, Restoplan est un cabinet avec un bon site ; s'il est nettement au-dessus, l'activité s'industrialise. La part de marché est calculée sur le scénario central puis sur le socle prudent.`;
-  // 5. leads
-  const m=st.m, mb=$("#mt tbody"); mb.innerHTML=""; let share=0,mc=0,mca=0;
-  m.rows.forEach((r,i)=>{const [d,s,sh,cv,amt]=r,c=m.leads*sh/100*cv/100; share+=sh; mc+=c; mca+=c*amt;
-    mb.insertAdjacentHTML("beforeend",`<tr><td class="d">${d}<small>${s}</small></td><td><input data-i="${i}" data-j="2" type="number" min="0" max="100" value="${sh}"> %</td><td><input data-i="${i}" data-j="3" type="number" min="0" max="100" value="${cv}"> %</td><td><input class="w" data-i="${i}" data-j="4" type="number" min="0" step="10" value="${amt}"> €</td><td>${n1(c)}</td><td>${eur(c*amt)}</td></tr>`);});
-  mb.insertAdjacentHTML("beforeend",`<tr class="tot"><td>Total</td><td><span class="${Math.round(share)===100?"":"neg"}">${share} %</span></td><td></td><td></td><td>${n1(mc)}</td><td>${eur(mca)}</td></tr>`);
-  const ecart=cmd?(mc*12-cmd)/cmd:0;
-  $("#check").innerHTML=`<div>Leads par mois<b><input data-k="leads" type="number" min="0" step="5" value="${m.leads}"></b>formulaire, chatbot, appels, réseau</div>
-    <div>Côté contacts<b>${n1(mc)} cmd / mois</b>panier ${mc?eur(mca/mc):"—"}, conversion ${m.leads?pct(mc/m.leads):"—"}</div>
-    <div>Côté part de marché (bloc 1)<b>${n1(cmd/12)} cmd / mois</b>panier ${eur(panier)} · écart <span class="${Math.abs(ecart)>.25?"neg":"pos"}" style="font-weight:800">${ecart>0?"+":""}${pct(ecart)}</span></div>`;
-
   // listeners
   document.querySelectorAll("#mk input").forEach(el=>el.addEventListener("input",()=>{st.mk.rows[+el.dataset.mki][2]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
   document.querySelectorAll("#vt input").forEach(el=>el.addEventListener("input",()=>{st.v[el.dataset.v]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
   document.querySelectorAll("#t input,#t select").forEach(el=>el.addEventListener("input",()=>{const i=+el.dataset.i; if(el.tagName==="INPUT") st.s[i][0]=Math.max(0,Number(el.value)||0); else st.s[i][1]=el.value; save(); keepFocus(render);}));
   document.querySelectorAll("#params input").forEach(el=>el.addEventListener("input",()=>{st.p[el.dataset.k]=Number(el.value)||0; save(); keepFocus(render);}));
-  document.querySelectorAll("#mt input").forEach(el=>el.addEventListener("input",()=>{st.m.rows[+el.dataset.i][+el.dataset.j]=Number(el.value)||0; save(); keepFocus(render);}));
-  $("#check input").addEventListener("input",e=>{st.m.leads=Number(e.target.value)||0; save(); keepFocus(render);});
 }
 $("#mkPrudent").addEventListener("click",()=>{st.mk.rows.forEach((r,i)=>{if(i>=2) r[2]=0;}); save(); render();});
 $("#mkCentral").addEventListener("click",()=>{st.mk=clone(DEF_MK); save(); render();});
 $("#resetS").addEventListener("click",()=>{st.s=clone(DEF_S); save(); render();});
-$("#resetM").addEventListener("click",()=>{st.m=clone(DEF_M); save(); render();});
 load(); render();
 </script>
 </body>
