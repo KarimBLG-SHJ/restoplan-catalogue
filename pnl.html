@@ -139,19 +139,19 @@ const DEF_S=[[24,"rentree"],[4,"rentree"],[6,"rentree"],[10,"rentree"],[12,"rent
 const DEF_P={g2:1.3,g3:1.75,expert:0,paiement:2.2,mkt:8,soft:300,juri:600,ops:850};
 const DEF_M={leads:60,rows:[
  ["Curieux, pas de projet daté, hors France ou hors périmètre","Rien. On répond, on garde le contact.",30,0,0],
- ["« J'aimerais l'avis d'un pro avant de me lancer »","Visite sur place 2 h",10,35,240],
- ["« Je veux une terrasse »","Plan terrasse + dossier AOT",10,40,1000],
- ["« Je change ma devanture / mon enseigne »","Déclaration préalable + enseigne",9,35,1860],
- ["« Ma hotte n'est pas aux normes »","Dimensionnement extraction",8,30,1400],
- ["« Je reprends un resto, qu'est-ce qui n'est pas aux normes ? »","Diagnostic conformité + relevé",8,30,1920],
- ["« J'ai une amende PMR / mes WC ne passent pas »","Diagnostic accessibilité + dérogation",6,40,750],
- ["« La mairie me demande un dossier ERP »","Autorisation de travaux ERP",5,25,3750],
- ["« Je monte ma cuisine pro »","Plan technique cuisine",3,20,9000],
- ["« Je veux casser un mur »","Étude de structure",3,25,1625],
- ["« Mon local n'est pas classé restaurant »","Changement de destination",3,25,1200],
- ["« Les voisins se plaignent du bruit »","Diagnostic acoustique",2,25,2300],
- ["« Mes devis sont-ils cohérents ? »","Analyse de devis + visite",3,30,720]]};
-const KEY="restoplan-v4";
+ ["« J'aimerais l'avis d'un pro avant de me lancer »","Visite sur place 2 h",10,50,240],
+ ["« Je veux une terrasse »","Plan terrasse + dossier AOT",10,60,1000],
+ ["« Je change ma devanture / mon enseigne »","Déclaration préalable + enseigne",9,50,1860],
+ ["« Ma hotte n'est pas aux normes »","Dimensionnement extraction",8,45,1400],
+ ["« Je reprends un resto, qu'est-ce qui n'est pas aux normes ? »","Diagnostic conformité + relevé",8,45,1920],
+ ["« J'ai une amende PMR / mes WC ne passent pas »","Diagnostic accessibilité + dérogation",6,60,750],
+ ["« La mairie me demande un dossier ERP »","Autorisation de travaux ERP",5,37,3750],
+ ["« Je monte ma cuisine pro »","Plan technique cuisine",3,30,9000],
+ ["« Je veux casser un mur »","Étude de structure",3,37,1625],
+ ["« Mon local n'est pas classé restaurant »","Changement de destination",3,37,1200],
+ ["« Les voisins se plaignent du bruit »","Diagnostic acoustique",2,37,2300],
+ ["« Mes devis sont-ils cohérents ? »","Analyse de devis + visite",3,45,720]]};
+const KEY="restoplan-v5";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
