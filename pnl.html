@@ -3,141 +3,237 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Restoplan — P&L simple</title>
+<title>Restoplan — P&L</title>
 <style>
   :root{--navy:#0f1b2d;--terracotta:#c7653d;--sand:#f6efe6;--cream:#fffaf3;--ink:#1d2430;--muted:#697386;--line:#e6dccf;--white:#fff;--green:#2e7d4f;--red:#b43a3a}
   *{box-sizing:border-box}
   body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--cream);line-height:1.5}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
   header{background:var(--navy);color:var(--white);padding:40px 0 30px}
   .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px;margin-bottom:20px}
   .brand-mark{width:34px;height:34px;border-radius:10px;border:2px solid var(--terracotta);display:grid;place-items:center;color:var(--terracotta);font-weight:900}
   header h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.05em;line-height:1.05;margin:0 0 10px}
-  header p{color:rgba(255,255,255,.78);max-width:720px;margin:0;font-size:16px}
-  main{padding:30px 0 60px}
-  .grid{display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start}
-  .panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:22px}
-  .panel h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--terracotta);margin:0 0 14px}
-  .panel h2:not(:first-child){margin-top:22px}
-  .f{display:grid;grid-template-columns:1fr 110px;gap:10px;align-items:center;margin-bottom:10px;font-size:14px}
-  .f label{color:#3e4858}
-  .f small{display:block;color:var(--muted);font-size:12px}
-  .f input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:700;color:var(--navy);text-align:right}
-  .f input:focus{outline:2px solid var(--terracotta);outline-offset:1px}
-  .f3{display:grid;grid-template-columns:1fr 70px 70px 70px;gap:6px;align-items:center;margin-bottom:10px;font-size:14px}
-  .f3 input{width:100%;padding:8px 6px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:700;color:var(--navy);text-align:right}
-  .f3 .y{font-size:11px;color:var(--muted);text-align:center;font-weight:700}
-  table{width:100%;border-collapse:collapse;font-size:14.5px}
-  th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-  th:first-child,td:first-child{text-align:left}
-  thead th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-  tr.sub td{color:var(--muted);font-size:13.5px;padding-left:22px}
-  tr.tot td{font-weight:800;color:var(--navy);background:var(--sand)}
-  tr.big td{font-weight:900;font-size:17px;color:var(--navy)}
-  .pos{color:var(--green)} .neg{color:var(--red)}
-  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  header p{color:rgba(255,255,255,.78);max-width:780px;margin:0;font-size:16px}
+  .toc{position:sticky;top:0;z-index:10;background:rgba(255,250,243,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .toc .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px}
+  .toc a{white-space:nowrap;font-size:13px;color:var(--navy);text-decoration:none;padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--white)}
+  .toc a:hover{border-color:var(--terracotta);color:var(--terracotta)}
+  main{padding:26px 0 60px}
+  section{margin-bottom:34px;scroll-margin-top:70px}
+  h2{font-size:clamp(20px,2.6vw,26px);letter-spacing:-.04em;color:var(--navy);margin:0 0 4px}
+  p.lead{color:var(--muted);margin:0 0 14px;max-width:820px;font-size:14.5px}
+  .top{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
   .kpi{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px}
   .kpi b{display:block;font-size:26px;letter-spacing:-.04em;color:var(--navy);line-height:1.1}
   .kpi span{font-size:12.5px;color:var(--muted)}
-  .note{font-size:13px;color:var(--muted);margin-top:16px}
-  .reset{margin-top:18px;font-size:13px;background:none;border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;color:var(--navy);font-weight:700}
-  .reset:hover{border-color:var(--terracotta);color:var(--terracotta)}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px;overflow-x:auto}
+  .chart{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;align-items:end;height:150px;border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:26px}
+  .bar{position:relative;background:var(--navy);border-radius:6px 6px 0 0;min-height:2px}
+  .bar i{position:absolute;left:0;right:0;bottom:100%;text-align:center;font-style:normal;font-size:11px;font-weight:700;color:var(--navy);padding-bottom:3px}
+  .months{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  thead th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  tr.cat td{background:var(--sand);color:var(--navy);font-weight:800;padding-top:12px}
+  tr.cat td span{color:var(--muted);font-weight:500;font-size:12.5px;margin-left:8px}
+  td input{width:62px;padding:6px;border:1px solid var(--line);border-radius:8px;font:inherit;font-weight:700;color:var(--navy);text-align:right}
+  td input.w{width:84px}
+  td select{padding:6px 4px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13px;color:var(--navy);background:var(--white)}
+  input:focus,select:focus{outline:2px solid var(--terracotta);outline-offset:1px}
+  td.n{color:var(--navy);font-weight:600}
+  td.muted{color:var(--muted);font-size:12.5px}
+  td.d{color:var(--navy);font-weight:700}
+  td.d small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;white-space:normal}
+  tr.tot td{font-weight:900;color:var(--navy);background:var(--sand);font-size:15px}
+  tr.sub td{color:var(--muted);font-size:13.5px;padding-left:22px}
+  tr.big td{font-weight:900;font-size:17px;color:var(--navy)}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .params{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .pf{font-size:13px;color:#3e4858}
+  .pf small{display:block;color:var(--muted);font-size:11.5px}
+  .pf input{width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;font-weight:700;color:var(--navy);text-align:right}
+  .pf .two{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+  button{font:inherit;font-size:13.5px;font-weight:700;border-radius:999px;padding:9px 16px;cursor:pointer;border:1px solid var(--line);background:var(--white);color:var(--navy)}
+  button:hover{border-color:var(--terracotta);color:var(--terracotta)}
+  .note{font-size:13px;color:var(--muted);margin-top:12px;max-width:860px}
+  .check{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+  .check div{background:var(--sand);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--muted)}
+  .check b{display:block;font-size:20px;color:var(--navy);letter-spacing:-.03em}
+  .check input{width:90px;font:inherit;font-size:20px;font-weight:800;color:var(--navy);border:0;border-bottom:2px solid var(--terracotta);background:none;padding:0}
   a{color:var(--terracotta)}
-  @media(max-width:860px){.grid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
-  @media print{header{-webkit-print-color-adjust:exact;print-color-adjust:exact}.reset{display:none}}
+  @media(max-width:760px){.top,.check{grid-template-columns:1fr 1fr}.chart{height:100px}.bar i{display:none}.hide-m{display:none}}
 </style>
 </head>
 <body>
 <header><div class="wrap">
   <div class="brand"><span class="brand-mark">R</span> Restoplan</div>
-  <h1>P&L simple sur trois ans</h1>
-  <p>Une seule idée : combien de commandes par mois, à quel panier, en gardant quelle marge, pour couvrir quelles charges. Tout est modifiable, tout se recalcule. Hors taxes. Valeurs par défaut = scénario central du business plan.</p>
+  <h1>P&L sur trois ans, piloté par les 54 services</h1>
+  <p>Une seule page. Les services du catalogue, combien de fois chacun se vend dans l'année et à quel moment, donnent le volume et le chiffre d'affaires. Les charges donnent le résultat. En bas, un contrôle côté leads pour vérifier que l'histoire tient. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
 </div></header>
+<nav class="toc"><div class="wrap">
+  <a href="#services">1. Les services</a><a href="#saison">2. Quand</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#leads">5. Contrôle leads</a><a href="index.html">Catalogue</a>
+</div></nav>
 
 <main class="wrap">
-<div class="kpis" id="kpis"></div>
-<div class="grid">
-  <aside class="panel" id="inputs">
-    <h2>Volume</h2>
-    <div class="f3"><div></div><div class="y">An 1</div><div class="y">An 2</div><div class="y">An 3</div></div>
-    <div class="f3"><label>Commandes / mois</label><input data-k="cmd1" type="number" min="0" step="1"><input data-k="cmd2" type="number" min="0" step="1"><input data-k="cmd3" type="number" min="0" step="1"></div>
-    <div class="f"><label>Panier moyen HT<small>€ par commande</small></label><input data-k="panier" type="number" min="0" step="10"></div>
+<div class="top" id="kpis"></div>
 
-    <h2>Marge</h2>
-    <div class="f"><label>Sous-traitance externe<small>% du prix client reversé (0 : les experts, c'est vous)</small></label><input data-k="expert" type="number" min="0" max="100" step="1"></div>
-    <div class="f"><label>Frais de paiement<small>% du CA</small></label><input data-k="paiement" type="number" min="0" max="20" step="0.1"></div>
-    <div class="f"><label>Marketing<small>% du CA</small></label><input data-k="mkt" type="number" min="0" max="100" step="0.5"></div>
+<section id="services">
+  <h2>1. Les 54 services : combien de fois</h2>
+  <p class="lead">Hypothèse de commandes sur l'an 1 pour chaque service, et le profil de saison qui dit quand la demande arrive. Prix du catalogue, estimations à 120 €/h, la visite sur place comptée 2 h. La grille au m² est interne et comptée à zéro.</p>
+  <div class="panel">
+    <table id="t"><thead><tr><th>Service</th><th class="hide-m">Prix HT</th><th>Cmd / an</th><th>Quand</th><th>CA / an</th><th class="hide-m">Pic</th></tr></thead><tbody></tbody></table>
+    <div class="actions"><button id="resetS">Revenir aux hypothèses de départ</button></div>
+  </div>
+</section>
 
-    <h2>Charges fixes / mois</h2>
-    <div class="f"><label>Serveurs & abonnements</label><input data-k="soft" type="number" min="0" step="50"></div>
-    <div class="f"><label>Assurance & juridique</label><input data-k="juri" type="number" min="0" step="50"></div>
-    <div class="f"><label>Support & opérations</label><input data-k="ops" type="number" min="0" step="50"></div>
+<section id="saison">
+  <h2>2. Quand : commandes par mois</h2>
+  <p class="lead">Somme des profils de saison de tous les services. Printemps pour terrasses et enseignes, rentrée et janvier pour ouvertures et reprises, été pour les chantiers pendant fermeture, creux d'août presque partout.</p>
+  <div class="panel"><div class="chart" id="chart"></div><div class="months" id="months"></div></div>
+</section>
 
-    <button class="reset" id="reset">Revenir au scénario central</button>
-    <p class="note">Paiement ≈ 2,2 %, marketing ≈ 8 % du CA. Le volume et le panier peuvent venir du <a href="mix.html">mix des demandes</a> ou du <a href="services.html">volume par service</a>. Catalogue des prestations <a href="index.html">ici</a>.</p>
-  </aside>
+<section id="charges">
+  <h2>3. Charges et montée en volume</h2>
+  <p class="lead">Les experts, c'est vous : rien n'est reversé par défaut. Les charges fixes sont saisies par mois. La rémunération n'est pas comptée : le résultat est ce que l'activité dégage avant de vous payer.</p>
+  <div class="panel"><div class="params" id="params">
+    <label class="pf">Volume an 2 / an 3<small>multiplicateur sur l'an 1</small><div class="two"><input data-k="g2" type="number" min="0" step="0.05"><input data-k="g3" type="number" min="0" step="0.05"></div></label>
+    <label class="pf">Sous-traitance externe<small>% du prix client reversé</small><input data-k="expert" type="number" min="0" max="100" step="1"></label>
+    <label class="pf">Frais de paiement<small>% du CA</small><input data-k="paiement" type="number" min="0" max="20" step="0.1"></label>
+    <label class="pf">Marketing<small>% du CA</small><input data-k="mkt" type="number" min="0" max="100" step="0.5"></label>
+    <label class="pf">Serveurs & abonnements<small>€ / mois</small><input data-k="soft" type="number" min="0" step="50"></label>
+    <label class="pf">Assurance & juridique<small>€ / mois</small><input data-k="juri" type="number" min="0" step="50"></label>
+    <label class="pf">Support & opérations<small>€ / mois</small><input data-k="ops" type="number" min="0" step="50"></label>
+  </div></div>
+</section>
 
-  <section class="panel">
-    <table id="pl"></table>
-    <p class="note" id="be"></p>
-  </section>
-</div>
+<section id="pl">
+  <h2>4. P&L trois ans</h2>
+  <p class="lead">L'an 1 vient directement du tableau des services. Les ans 2 et 3 appliquent les multiplicateurs de volume au même mix et au même panier.</p>
+  <div class="panel"><table id="plt"></table><p class="note" id="be"></p></div>
+</section>
+
+<section id="leads">
+  <h2>5. Contrôle côté leads</h2>
+  <p class="lead">Même histoire racontée depuis les contacts entrants : une part ne commande rien, la majorité vient pour un petit problème précis, les gros dossiers sont rares. Si le volume mensuel ici s'éloigne trop de celui des services, l'un des deux ment.</p>
+  <div class="panel">
+    <div class="check" id="check"></div>
+    <table id="mt"><thead><tr><th>La demande, telle qu'elle arrive</th><th>Part des leads</th><th>Qui commande</th><th>Montant HT</th><th>Cmd / mois</th><th>CA / mois</th></tr></thead><tbody></tbody></table>
+    <div class="actions"><button id="resetM">Revenir au mix de départ</button></div>
+  </div>
+</section>
 </main>
 
+<script src="catalogue.js"></script>
 <script>
-const DEF={cmd1:20,cmd2:26,cmd3:35,panier:990,expert:0,paiement:2.2,mkt:8,soft:300,juri:600,ops:850};
-const KEY="restoplan-pnl-v3";
+const RATE=120, MONTHS=["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Août","Sep","Oct","Nov","Déc"];
+const SEASONS={
+  flat:["Toute l'année",[1,1,1,1,1,1,1,.5,1,1,1,.8]],
+  printemps:["Printemps",[.5,1,1.5,1.8,1.6,1.2,.8,.3,.8,.5,.4,.3]],
+  rentree:["Rentrée + janvier",[1.4,1,1,.9,.8,.8,.6,.3,1.6,1.3,1,.8]],
+  ete:["Fermetures d'été",[1.2,.7,.8,.8,.8,1,1.6,1.8,.9,.8,.7,.6]],
+  controle:["Contrôles",[1,1,1,1,1,1.2,.8,.4,1.1,1,1,.9]],
+};
+const DEF_S=[[24,"rentree"],[4,"rentree"],[6,"rentree"],[10,"rentree"],[12,"rentree"],[5,"flat"],[6,"rentree"],[3,"rentree"],[4,"rentree"],[10,"printemps"],[2,"rentree"],[6,"flat"],[12,"printemps"],[5,"rentree"],[8,"printemps"],[5,"printemps"],[3,"printemps"],[2,"flat"],[1,"flat"],[5,"flat"],[5,"rentree"],[2,"flat"],[6,"controle"],[2,"controle"],[4,"printemps"],[3,"controle"],[4,"controle"],[2,"controle"],[2,"controle"],[3,"controle"],[2,"printemps"],[3,"ete"],[8,"flat"],[5,"controle"],[3,"flat"],[1,"flat"],[4,"ete"],[1,"ete"],[5,"ete"],[6,"ete"],[4,"ete"],[8,"ete"],[3,"ete"],[2,"ete"],[5,"controle"],[3,"controle"],[3,"controle"],[3,"flat"],[4,"controle"],[1,"flat"],[2,"flat"],[0,"flat"],[0,"flat"],[0,"flat"]];
+const DEF_P={g2:1.3,g3:1.75,expert:0,paiement:2.2,mkt:8,soft:300,juri:600,ops:850};
+const DEF_M={leads:60,rows:[
+ ["Curieux, pas de projet daté, hors France ou hors périmètre","Rien. On répond, on garde le contact.",30,0,0],
+ ["« J'aimerais l'avis d'un pro avant de me lancer »","Visite sur place 2 h",10,35,240],
+ ["« Je veux une terrasse »","Plan terrasse + dossier AOT",10,40,1000],
+ ["« Je change ma devanture / mon enseigne »","Déclaration préalable + enseigne",9,35,1860],
+ ["« Ma hotte n'est pas aux normes »","Dimensionnement extraction",8,30,1400],
+ ["« Je reprends un resto, qu'est-ce qui n'est pas aux normes ? »","Diagnostic conformité + relevé",8,30,1920],
+ ["« J'ai une amende PMR / mes WC ne passent pas »","Diagnostic accessibilité + dérogation",6,40,750],
+ ["« La mairie me demande un dossier ERP »","Autorisation de travaux ERP",5,25,3750],
+ ["« Je monte ma cuisine pro »","Plan technique cuisine",3,20,9000],
+ ["« Je veux casser un mur »","Étude de structure",3,25,1625],
+ ["« Mon local n'est pas classé restaurant »","Changement de destination",3,25,1200],
+ ["« Les voisins se plaignent du bruit »","Diagnostic acoustique",2,25,2300],
+ ["« Mes devis sont-ils cohérents ? »","Analyse de devis + visite",3,30,720]]};
+const KEY="restoplan-v4";
 const $=s=>document.querySelector(s);
-const inputs=[...document.querySelectorAll("#inputs input")];
-const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
+const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
 const pct=n=>(n*100).toLocaleString("fr-FR",{maximumFractionDigits:1})+" %";
+const n1=n=>n.toLocaleString("fr-FR",{maximumFractionDigits:1});
 const cls=n=>n<0?"neg":"pos";
+const price=it=>it.c==="m2"?0:(it.b==="estim"?it.h*RATE:(it.u==="/h"?it.p*2:it.p));
+const clone=o=>JSON.parse(JSON.stringify(o));
+let st;
+function load(){try{st=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!st) st={};
+  if(!st.s||st.s.length!==ITEMS.length) st.s=clone(DEF_S);
+  st.p=Object.assign(clone(DEF_P),st.p||{});
+  if(!st.m||!st.m.rows) st.m=clone(DEF_M);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 
-function load(){let v={};try{v=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
-  inputs.forEach(i=>i.value=v[i.dataset.k]??DEF[i.dataset.k]);}
-function read(){const v={};inputs.forEach(i=>v[i.dataset.k]=Number(i.value)||0);return v;}
+function keepFocus(fn){const a=document.activeElement,sel=a&&a.dataset&&(a.dataset.k||a.dataset.i)?{k:a.dataset.k,i:a.dataset.i,j:a.dataset.j,t:a.tagName.toLowerCase()}:null; fn();
+  if(sel){const q=sel.k?`[data-k="${sel.k}"]`:`${sel.t}[data-i="${sel.i}"]${sel.j?`[data-j="${sel.j}"]`:""}`;const n=document.querySelector(q);n&&n.focus();}}
 
-function calc(){
-  const v=read();
-  try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}
-  const years=[1,2,3].map(y=>{
-    const cmd=v["cmd"+y]*12, ca=cmd*v.panier;
-    const prod=ca*v.expert/100, mb=ca-prod;
-    const pay=ca*v.paiement/100, mkt=ca*v.mkt/100;
-    const soft=v.soft*12, juri=v.juri*12, ops=v.ops*12;
-    const charges=pay+mkt+soft+juri+ops;
-    const ebitda=mb-charges;
-    const fixes=soft+juri+ops;
-    const contribPerCmd=v.panier*(1-v.expert/100-v.paiement/100-v.mkt/100);
-    const be=contribPerCmd>0?fixes/12/contribPerCmd:Infinity;
-    return {cmd,ca,prod,mb,pay,mkt,soft,juri,ops,charges,ebitda,be,contribPerCmd};
-  });
-  const row=(label,f,c="")=>`<tr class="${c}"><td>${label}</td>${years.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
-  $("#pl").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
-    ${row("Commandes / an",y=>y.cmd.toLocaleString("fr-FR"))}
-    ${row("Chiffre d'affaires HT",y=>k(y.ca),"tot")}
+function render(){
+  // 1. services
+  const tb=$("#t tbody"); tb.innerHTML="";
+  const monthly=Array(12).fill(0); let cmd=0,ca=0;
+  CATS.forEach(([key,title])=>{ if(key==="m2") return; let cc=0,cca=0,rows=[];
+    ITEMS.forEach((it,i)=>{ if(it.c!==key) return;
+      const [q,s]=st.s[i],p=price(it),w=SEASONS[s][1],tot=w.reduce((a,b)=>a+b,0);
+      w.forEach((x,m)=>monthly[m]+=q*x/tot); cc+=q; cca+=q*p;
+      rows.push(`<tr><td>${it.n}</td><td class="muted hide-m">${eur(p)}</td><td><input data-i="${i}" type="number" min="0" step="1" value="${q}"></td>
+        <td><select data-i="${i}">${Object.entries(SEASONS).map(([kk,v])=>`<option value="${kk}"${kk===s?" selected":""}>${v[0]}</option>`).join("")}</select></td>
+        <td class="n">${eur(q*p)}</td><td class="muted hide-m">${s==="flat"?"—":MONTHS[w.indexOf(Math.max(...w))]}</td></tr>`);});
+    cmd+=cc; ca+=cca;
+    tb.insertAdjacentHTML("beforeend",`<tr class="cat"><td colspan="2">${title}<span>${cc} cmd</span></td><td></td><td></td><td>${eur(cca)}</td><td class="hide-m"></td></tr>`+rows.join(""));});
+  tb.insertAdjacentHTML("beforeend",`<tr class="tot"><td>Total an 1</td><td class="hide-m"></td><td>${cmd}</td><td></td><td>${eur(ca)}</td><td class="hide-m"></td></tr>`);
+  const panier=cmd?ca/cmd:0;
+  // 2. chart
+  const mx=Math.max(...monthly,1);
+  $("#chart").innerHTML=monthly.map(v=>`<div class="bar" style="height:${v/mx*100}%"><i>${v.toLocaleString("fr-FR",{maximumFractionDigits:0})}</i></div>`).join("");
+  $("#months").innerHTML=MONTHS.map(m=>`<div>${m}</div>`).join("");
+  // 3. params
+  document.querySelectorAll("#params input").forEach(i=>{if(document.activeElement!==i) i.value=st.p[i.dataset.k];});
+  // 4. P&L
+  const v=st.p, years=[1,v.g2,v.g3].map(g=>{const c=cmd*g,r=c*panier,prod=r*v.expert/100,mb=r-prod,pay=r*v.paiement/100,mk=r*v.mkt/100,soft=v.soft*12,juri=v.juri*12,ops=v.ops*12;
+    const charges=pay+mk+soft+juri+ops,ebitda=mb-charges,contrib=panier*(1-v.expert/100-v.paiement/100-v.mkt/100),be=contrib>0?(soft+juri+ops)/12/contrib:Infinity;
+    return {c,r,prod,mb,pay,mk,soft,juri,ops,ebitda,be,contrib};});
+  const row=(l,f,c="")=>`<tr class="${c}"><td>${l}</td>${years.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
+  $("#plt").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
+    ${row("Commandes / an",y=>Math.round(y.c).toLocaleString("fr-FR"))}
+    ${row("Chiffre d'affaires HT",y=>k(y.r),"tot")}
     ${row("Sous-traitance externe",y=>"−"+k(y.prod),"sub")}
-    ${row("Marge brute",y=>k(y.mb)+` <span style="color:var(--muted);font-weight:500">(${pct(y.ca?y.mb/y.ca:0)})</span>`,"tot")}
+    ${row("Marge brute",y=>k(y.mb)+` <span style="color:var(--muted);font-weight:500">(${pct(y.r?y.mb/y.r:0)})</span>`,"tot")}
     ${row("Frais de paiement",y=>"−"+k(y.pay),"sub")}
-    ${row("Marketing",y=>"−"+k(y.mkt),"sub")}
+    ${row("Marketing",y=>"−"+k(y.mk),"sub")}
     ${row("Serveurs & abonnements",y=>"−"+k(y.soft),"sub")}
     ${row("Assurance & juridique",y=>"−"+k(y.juri),"sub")}
     ${row("Support & opérations",y=>"−"+k(y.ops),"sub")}
     ${row("EBITDA",y=>`<span class="${cls(y.ebitda)}">${k(y.ebitda)}</span>`,"big")}
-    ${row("Marge EBITDA",y=>`<span class="${cls(y.ebitda)}">${pct(y.ca?y.ebitda/y.ca:0)}</span>`)}
-    ${row("Point mort (commandes / mois)",y=>isFinite(y.be)?Math.ceil(y.be):"—")}
-  </tbody>`;
-  const cum=years.reduce((a,y)=>({ca:a.ca+y.ca,e:a.e+y.ebitda}),{ca:0,e:0});
-  $("#kpis").innerHTML=`
-    <div class="kpi"><b>${k(cum.ca)}</b><span>CA cumulé sur 3 ans</span></div>
-    <div class="kpi"><b class="${cls(cum.e)}">${k(cum.e)}</b><span>EBITDA cumulé sur 3 ans</span></div>
-    <div class="kpi"><b>${eur(years[0].contribPerCmd)}</b><span>ce qu'une commande laisse après sous-traitance, paiement et marketing</span></div>`;
-  $("#be").textContent=`Point mort : nombre de commandes par mois nécessaire pour que la marge couvre exactement les charges fixes de l'année. En dessous, Restoplan perd de l'argent chaque mois ; au-dessus, chaque commande supplémentaire rapporte ${eur(years[0].contribPerCmd)} de contribution.`;
+    ${row("Marge EBITDA",y=>`<span class="${cls(y.ebitda)}">${pct(y.r?y.ebitda/y.r:0)}</span>`)}
+    ${row("Point mort (commandes / mois)",y=>isFinite(y.be)?Math.ceil(y.be):"—")}</tbody>`;
+  $("#be").textContent=`Point mort : commandes par mois pour que la marge couvre les charges fixes. Au-dessus, chaque commande supplémentaire laisse ${eur(years[0].contrib)} après sous-traitance, paiement et marketing.`;
+  const cum=years.reduce((a,y)=>({r:a.r+y.r,e:a.e+y.ebitda}),{r:0,e:0});
+  $("#kpis").innerHTML=`<div class="kpi"><b>${cmd}</b><span>commandes an 1, soit ${n1(cmd/12)} / mois</span></div>
+    <div class="kpi"><b>${k(ca)}</b><span>CA HT an 1, panier ${eur(panier)}</span></div>
+    <div class="kpi"><b class="${cls(years[0].ebitda)}">${k(years[0].ebitda)}</b><span>EBITDA an 1 (${pct(ca?years[0].ebitda/ca:0)})</span></div>
+    <div class="kpi"><b class="${cls(cum.e)}">${k(cum.e)}</b><span>EBITDA cumulé 3 ans, sur ${k(cum.r)} de CA</span></div>`;
+  // 5. leads
+  const m=st.m, mb=$("#mt tbody"); mb.innerHTML=""; let share=0,mc=0,mca=0;
+  m.rows.forEach((r,i)=>{const [d,s,sh,cv,amt]=r,c=m.leads*sh/100*cv/100; share+=sh; mc+=c; mca+=c*amt;
+    mb.insertAdjacentHTML("beforeend",`<tr><td class="d">${d}<small>${s}</small></td><td><input data-i="${i}" data-j="2" type="number" min="0" max="100" value="${sh}"> %</td><td><input data-i="${i}" data-j="3" type="number" min="0" max="100" value="${cv}"> %</td><td><input class="w" data-i="${i}" data-j="4" type="number" min="0" step="10" value="${amt}"> €</td><td>${n1(c)}</td><td>${eur(c*amt)}</td></tr>`);});
+  mb.insertAdjacentHTML("beforeend",`<tr class="tot"><td>Total</td><td><span class="${Math.round(share)===100?"":"neg"}">${share} %</span></td><td></td><td></td><td>${n1(mc)}</td><td>${eur(mca)}</td></tr>`);
+  const diff=cmd?(mc*12-cmd)/cmd:0;
+  $("#check").innerHTML=`<div>Leads par mois<b><input data-k="leads" type="number" min="0" step="5" value="${m.leads}"></b>formulaire, chatbot, appels</div>
+    <div>Côté leads<b>${n1(mc)} cmd / mois</b>panier ${mc?eur(mca/mc):"—"}, conversion ${m.leads?pct(mc/m.leads):"—"}</div>
+    <div>Côté services<b>${n1(cmd/12)} cmd / mois</b>panier ${eur(panier)} · écart <span class="${Math.abs(diff)>.25?"neg":"pos"}" style="font-weight:800">${diff>0?"+":""}${pct(diff)}</span></div>`;
+  // listeners
+  document.querySelectorAll("#t input,#t select").forEach(el=>el.addEventListener("input",()=>{const i=+el.dataset.i; if(el.tagName==="INPUT") st.s[i][0]=Math.max(0,Number(el.value)||0); else st.s[i][1]=el.value; save(); keepFocus(render);}));
+  document.querySelectorAll("#params input").forEach(el=>el.addEventListener("input",()=>{st.p[el.dataset.k]=Number(el.value)||0; save(); keepFocus(render);}));
+  document.querySelectorAll("#mt input").forEach(el=>el.addEventListener("input",()=>{st.m.rows[+el.dataset.i][+el.dataset.j]=Number(el.value)||0; save(); keepFocus(render);}));
+  $("#check input").addEventListener("input",e=>{st.m.leads=Number(e.target.value)||0; save(); keepFocus(render);});
 }
-inputs.forEach(i=>i.addEventListener("input",calc));
-$("#reset").addEventListener("click",()=>{inputs.forEach(i=>i.value=DEF[i.dataset.k]);calc();});
-load();calc();
+$("#resetS").addEventListener("click",()=>{st.s=clone(DEF_S); save(); render();});
+$("#resetM").addEventListener("click",()=>{st.m=clone(DEF_M); save(); render();});
+load(); render();
 </script>
 </body>
 </html>
