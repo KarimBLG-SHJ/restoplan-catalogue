@@ -227,7 +227,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 function keepFocus(fn){const a=document.activeElement,d=a&&a.dataset||{};
   const q=d.k?`[data-k="${d.k}"]`:d.v?`[data-v="${d.v}"]`:d.mki!==undefined?`[data-mki="${d.mki}"]`:d.i!==undefined?`${a.tagName.toLowerCase()}[data-i="${d.i}"]${d.j?`[data-j="${d.j}"]`:""}`:null;
   fn(); if(q){const n=document.querySelector(q);n&&n.focus();}}
-function setVals(sel,obj){document.querySelectorAll(sel).forEach(i=>{const key=i.dataset.k||i.dataset.v; if(document.activeElement!==i) i.value=obj[key];});}
+function setVals(sel,obj){document.querySelectorAll(sel).forEach(i=>{const key=i.dataset.k||i.dataset.v; if(document.activeElement!==i) i.value=(i.placeholder&&!obj[key])?"":obj[key];});}
 const fill=(id,vals)=>{const tds=$(id).querySelectorAll("td"); vals.forEach((v,i)=>tds[i+1].innerHTML=v);};
 
 function render(){
