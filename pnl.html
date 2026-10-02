@@ -157,11 +157,11 @@
 
 <section id="charges">
   <h2>3. Charges</h2>
-  <p class="lead">Les experts, c'est vous : rien n'est reversé par défaut. Les charges fixes sont saisies par mois. Le temps de production est compté en heures pour savoir combien de personnes il faut ; il n'entre dans le P&L que si vous lui donnez un coût horaire. À zéro, le résultat est ce que l'activité dégage avant de vous payer.</p>
+  <p class="lead">Les experts, c'est vous : rien n'est reversé par défaut. Les charges fixes sont saisies par mois. Le temps de production n'est pas pré-rempli : les heures par commande et leur coût dépendent de l'organisation du cabinet (juniors sur les petites prestations, senior en supervision, templates) et seul le dirigeant peut les estimer. Tant qu'ils sont vides, le résultat est ce que l'activité dégage avant de payer qui que ce soit.</p>
   <div class="panel"><div class="params" id="params">
-    <label class="pf">Heures de production par commande<small>échanges, visite, dessin, dossier, relances, en moyenne</small><input data-k="hcmd" type="number" min="0" step="0.5"></label>
+    <label class="pf">Heures de production par commande<small>à estimer par le dirigeant : avec 30 ans de métier, des templates et des juniors sur les petites prestations, seul lui peut le dire. Vide = non compté.</small><input data-k="hcmd" type="number" min="0" step="0.5" placeholder="à renseigner"></label>
     <label class="pf">Heures productives par personne et par an<small>hors vente, admin, formation</small><input data-k="hetp" type="number" min="100" step="50"></label>
-    <label class="pf">Coût horaire de production<small>€ / h ; 0 = non compté</small><input data-k="hcost" type="number" min="0" step="5"></label>
+    <label class="pf">Coût horaire de production<small>€ / h, mix junior / senior en supervision ; à estimer par le dirigeant. 0 = non compté.</small><input data-k="hcost" type="number" min="0" step="5"></label>
     <label class="pf">Sous-traitance externe<small>% du prix client reversé</small><input data-k="expert" type="number" min="0" max="100" step="1"></label>
     <label class="pf">Frais de paiement<small>% du CA</small><input data-k="paiement" type="number" min="0" max="20" step="0.1"></label>
     <label class="pf">Coût par lead marché diffus<small>€ par contact : SEO, contenu, pub, outils</small><input data-k="cpl" type="number" min="0" step="5"></label>
@@ -179,7 +179,7 @@
 
 <section id="n">
   <h2>5. Ce que ça rapporte au propriétaire à 50, 100, 250, 500, 1 000 clients</h2>
-  <p class="lead">La vraie question n'est pas la taille du marché, c'est : peut-on servir N clients par an de façon rentable ? Même panier, mêmes prestations par projet et mêmes charges que ci-dessus. Les premiers clients viennent du réseau (sans marketing), les suivants du marché diffus au coût par lead du bloc 3. Le chiffre à regarder est le dernier : ce que chaque heure de production rapporte au propriétaire une fois tout payé, sauf lui.</p>
+  <p class="lead">La vraie question n'est pas la taille du marché, c'est : peut-on servir N clients par an de façon rentable ? Même panier, mêmes prestations par projet et mêmes charges que ci-dessus. Les premiers clients viennent du réseau (sans marketing), les suivants du marché diffus au coût par lead du bloc 3. Une fois les heures par commande renseignées par le dirigeant, la dernière ligne donne ce que chaque heure de production rapporte, à comparer au coût réel de l'équipe.</p>
   <div class="panel"><table id="nt"></table>
   <p class="note" id="nnote"></p></div>
 </section>
@@ -205,8 +205,8 @@ const DEF_MK={rows:[
  ["Terrasse, enseigne, façade, destination hors projet plus large",5000,9000,15000,"Extrapolation forte"],
  ["Contrôles et injonctions générant un aménagement",500,1100,2000,"Extrapolation forte"]]};
 const DEF_V={ld1:40,ld2:55,ld3:75,cd1:25,cd2:28,cd3:30,ln1:7,ln2:6,ln3:5,cn1:50,cn2:50,cn3:50,pp1:1.4,rb:25,rt:15,ppr:1.2};
-const DEF_P={expert:0,paiement:2.2,cpl:40,soft:300,juri:600,ops:850,hcmd:6,hetp:1400,hcost:0};
-const KEY="restoplan-v10";
+const DEF_P={expert:0,paiement:2.2,cpl:40,soft:300,juri:600,ops:850,hcmd:0,hetp:1400,hcost:0};
+const KEY="restoplan-v11";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -290,16 +290,16 @@ function render(){
     ${row("Serveurs & abonnements",y=>"−"+k(y.soft),"sub")}
     ${row("Assurance & juridique",y=>"−"+k(y.juri),"sub")}
     ${row("Support & opérations",y=>"−"+k(y.ops),"sub")}
-    ${row("Temps de production",y=>`${n0(y.hours)} h <span class="muted" style="font-weight:500">= ${n1(y.etp)} ETP</span>`,"sub")}
-    ${row("Coût du temps de production",y=>"−"+k(y.tcost),"sub")}
+    ${row("Temps de production",y=>p.hcmd?`${n0(y.hours)} h <span class="muted" style="font-weight:500">= ${n1(y.etp)} ETP</span>`:`<span class="muted">heures par commande à renseigner</span>`,"sub")}
+    ${row("Coût du temps de production",y=>p.hcost&&p.hcmd?"−"+k(y.tcost):`<span class="muted">non compté</span>`,"sub")}
     ${row(p.hcost?"EBITDA après coût du temps":"EBITDA avant rémunération",y=>`<span class="${cls(y.ebitda)}">${k(y.ebitda)}</span>`,"big")}
     ${row("Marge EBITDA",y=>`<span class="${cls(y.ebitda)}">${pct(y.r?y.ebitda/y.r:0)}</span>`)}
     ${row("Point mort (commandes / mois)",y=>isFinite(y.be)?Math.ceil(y.be):"—")}</tbody>`;
-  $("#be").textContent=`Point mort : commandes par mois pour que la marge couvre les charges fixes, hors marketing. Chaque commande laisse ${eur(years[0].contrib)} après sous-traitance, paiement${p.hcost?" et coût du temps":""}. ETP = équivalent temps plein nécessaire à la production, à ${n0(p.hetp)} h productives par an.`;
+  $("#be").textContent=`Point mort : commandes par mois pour que la marge couvre les charges fixes, hors marketing. Chaque commande laisse ${eur(years[0].contrib)} après sous-traitance, paiement${p.hcost?" et coût du temps":""}. ${p.hcmd?` ETP = équivalent temps plein nécessaire à la production, à ${n0(p.hetp)} h productives par an.`:""}`;
   const cum=years.reduce((a,y)=>({r:a.r+y.r,e:a.e+y.ebitda}),{r:0,e:0});
   $("#kpis").innerHTML=`<div class="kpi"><b>${n0(leadsD[0]/12+v.ln1)}</b><span>leads / mois an 1, dont ${v.ln1} du réseau halal</span></div>
     <div class="kpi"><b>${n0(news[0])}</b><span>nouveaux clients an 1 = ${proj?pct(news[0]/proj):"—"} du marché (${prudent?pct(news[0]/prudent):"—"} du socle prudent)</span></div>
-    <div class="kpi"><b>${n0(cmd)}</b><span>commandes an 1, panier ${eur(panier)} · ${n1(years[0].etp)} ETP de production</span></div>
+    <div class="kpi"><b>${n0(cmd)}</b><span>commandes an 1, panier ${eur(panier)}${p.hcmd?` · ${n1(years[0].etp)} ETP de production`:""}</span></div>
     <div class="kpi"><b>${k(years[0].r)}</b><span>CA HT an 1 · EBITDA <span class="${cls(years[0].ebitda)}">${k(years[0].ebitda)}</span></span></div>
     <div class="kpi"><b class="${cls(cum.e)}">${k(cum.e)}</b><span>EBITDA cumulé 3 ans, sur ${k(cum.r)} de CA</span></div>`;
 
@@ -316,11 +316,11 @@ function render(){
     ${nrow("Marketing (leads nécessaires au-delà du réseau × coût par lead)",y=>"−"+k(y.mkt),"sub")}
     ${nrow("Charges fixes",y=>"−"+k(y.fix),"sub")}
     ${nrow("Résultat avant rémunération",y=>`<span class="${cls(y.res)}">${k(y.res)}</span>`,"tot")}
-    ${nrow("Heures de production",y=>n0(y.hours)+" h")}
-    ${nrow("Personnes à plein temps",y=>n1(y.etp)+" ETP")}
-    ${nrow("Résultat par heure de production",y=>`<span class="${cls(y.resH)}">${eur(y.resH)} / h</span>`,"big")}
+    ${nrow("Heures de production",y=>p.hcmd?n0(y.hours)+" h":`<span class="muted">à renseigner</span>`)}
+    ${nrow("Personnes à plein temps",y=>p.hcmd?n1(y.etp)+" ETP":`<span class="muted">—</span>`)}
+    ${nrow("Résultat par heure de production",y=>p.hcmd?`<span class="${cls(y.resH)}">${eur(y.resH)} / h</span>`:`<span class="muted">—</span>`,"big")}
     ${nrow("Part du marché (62 k / 35 k)",y=>`${pct(y.sh)} <span class="muted">/ ${pct(y.shp)}</span>`,"sub")}</tbody>`;
-  $("#nnote").textContent=`Lecture : à ${n0(p.hcmd)} h par commande, le résultat par heure est ce que le propriétaire gagne de l'heure s'il produit tout lui-même, ou ce qu'il peut payer un architecte salarié tout en restant à l'équilibre. Si ce chiffre est proche d'un taux horaire d'architecte classique, Restoplan est un cabinet avec un bon site ; s'il est nettement au-dessus, l'activité s'industrialise. La part de marché est calculée sur le scénario central puis sur le socle prudent.`;
+  $("#nnote").textContent=p.hcmd?`Lecture : à ${n1(p.hcmd)} h par commande, le résultat par heure est ce que la production rapporte une fois tout payé sauf le temps lui-même. À comparer au coût horaire réel de l'équipe (juniors, senior en supervision) pour savoir ce qui reste au propriétaire. La part de marché est calculée sur le scénario central puis sur le socle prudent.`:`Les heures par commande ne sont pas renseignées (bloc 3) : le résultat affiché est avant tout coût de production humaine. Renseignez-les pour obtenir les heures, les personnes nécessaires et le résultat par heure. La part de marché est calculée sur le scénario central puis sur le socle prudent.`;
   // listeners
   document.querySelectorAll("#mk input").forEach(el=>el.addEventListener("input",()=>{st.mk.rows[+el.dataset.mki][2]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
   document.querySelectorAll("#vt input").forEach(el=>el.addEventListener("input",()=>{st.v[el.dataset.v]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
