@@ -69,7 +69,7 @@
     <div class="f"><label>Marketing<small>% du CA</small></label><input data-k="mkt" type="number" min="0" max="100" step="0.5"></div>
 
     <h2>Charges fixes / mois</h2>
-    <div class="f"><label>Shopify & logiciels</label><input data-k="soft" type="number" min="0" step="50"></div>
+    <div class="f"><label>Serveurs & abonnements</label><input data-k="soft" type="number" min="0" step="50"></div>
     <div class="f"><label>Assurance & juridique</label><input data-k="juri" type="number" min="0" step="50"></div>
     <div class="f"><label>Support & opérations</label><input data-k="ops" type="number" min="0" step="50"></div>
     <div class="f3"><label>Rémunération fondateur</label><input data-k="fond1" type="number" min="0" step="100"><input data-k="fond2" type="number" min="0" step="100"><input data-k="fond3" type="number" min="0" step="100"></div>
@@ -122,7 +122,7 @@ function calc(){
     ${row("Marge brute",y=>k(y.mb)+` <span style="color:var(--muted);font-weight:500">(${pct(y.ca?y.mb/y.ca:0)})</span>`,"tot")}
     ${row("Frais de paiement",y=>"−"+k(y.pay),"sub")}
     ${row("Marketing",y=>"−"+k(y.mkt),"sub")}
-    ${row("Shopify & logiciels",y=>"−"+k(y.soft),"sub")}
+    ${row("Serveurs & abonnements",y=>"−"+k(y.soft),"sub")}
     ${row("Assurance & juridique",y=>"−"+k(y.juri),"sub")}
     ${row("Support & opérations",y=>"−"+k(y.ops),"sub")}
     ${row("Rémunération fondateur",y=>"−"+k(y.fond),"sub")}
