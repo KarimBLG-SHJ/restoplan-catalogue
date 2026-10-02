@@ -80,7 +80,7 @@
   <p>D'abord ce qu'on sait du marché et comment chaque prix a été fixé. Ensuite un P&L simple : une part du marché français que l'on vise, plus les projets que le réseau halal apporte en direct. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
 </div></header>
 <nav class="toc"><div class="wrap">
-  <a href="#marche">A. Le marché</a><a href="#prix">B. Les prix</a><a href="#vise">1. Ce qu'on vise</a><a href="#mix">2. Mix de services</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#leads">5. Vérification</a><a href="index.html">Catalogue</a>
+  <a href="#marche">A. Le marché</a><a href="#prix">B. Les prix</a><a href="#vise">1. Ce qu'on vise</a><a href="#mix">2. Mix de services</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#n">5. À N clients</a><a href="#leads">6. Vérification</a><a href="index.html">Catalogue</a>
 </div></nav>
 
 <main class="wrap">
@@ -128,7 +128,7 @@
       <tr class="tot" id="vCmd"><td>Commandes</td><td></td><td></td><td></td></tr>
       <tr class="sub" id="vHal"><td>Part du volume venant du réseau halal</td><td></td><td></td><td></td></tr>
     </tbody></table>
-    <p class="note">Le réseau halal est volontairement en nombre fixe : il accélère le démarrage, il ne doit pas porter le projet à l'an 3. Le marché halal n'est pas isolé dans les statistiques publiques ; sa taille n'est donc pas modélisée, seuls les projets effectivement apportés le sont.</p>
+    <p class="note">Réseau halal : 3 à 4 masters franchisés, soit 150 à 200 restaurants. Hypothèse de départ : 20 % d'entre eux ont un projet dans l'année, soit 30 à 40, sans Google Ads ni SEO. Compté en nombre fixe : il accélère le démarrage, il ne doit pas porter le projet à l'an 3. C'est aussi le laboratoire : conversion, panier, prestations par client, réachat et heures réellement passées se mesurent d'abord là.</p>
   </div>
 </section>
 
@@ -165,8 +165,15 @@
   <div class="panel"><table id="plt"></table><p class="note" id="be"></p></div>
 </section>
 
+<section id="n">
+  <h2>5. Ce que ça rapporte au propriétaire à 50, 100, 250, 500, 1 000 clients</h2>
+  <p class="lead">La vraie question n'est pas la taille du marché, c'est : peut-on servir N clients par an de façon rentable ? Même panier, mêmes prestations par projet et mêmes charges que ci-dessus. Les premiers clients viennent du réseau (sans marketing), les suivants du marché diffus. Le chiffre à regarder est le dernier : ce que chaque heure de production rapporte au propriétaire une fois tout payé, sauf lui.</p>
+  <div class="panel"><table id="nt"></table>
+  <p class="note" id="nnote"></p></div>
+</section>
+
 <section id="leads">
-  <h2>5. Vérification par les contacts entrants</h2>
+  <h2>6. Vérification par les contacts entrants</h2>
   <p class="lead">Le bloc 1 part d'une part de marché. Ce bloc part d'autre chose : les gens qui nous contactent, ce qu'ils demandent, quelle part achète. On obtient un second nombre de commandes par mois. S'il est proche de celui du bloc 1, l'hypothèse tient. S'il est bien plus bas, il faudra plus de contacts, ou mieux convertir.</p>
   <div class="panel">
     <div class="check" id="check"></div>
@@ -194,7 +201,7 @@ const DEF_MK={rows:[
  ["Travaux significatifs du parc existant",10800,17000,23400,"Extrapolation (6–13 % du parc)"],
  ["Terrasse, enseigne, façade, destination hors projet plus large",5000,9000,15000,"Extrapolation forte"],
  ["Contrôles et injonctions générant un aménagement",500,1100,2000,"Extrapolation forte"]]};
-const DEF_V={s1:0.2,s2:0.3,s3:0.45,h1:50,h2:50,h3:50,ppp:1.4};
+const DEF_V={s1:0.2,s2:0.3,s3:0.45,h1:40,h2:40,h3:40,ppp:1.4};
 const DEF_P={expert:0,paiement:2.2,mkt:10,soft:300,juri:600,ops:850,hcmd:6,hetp:1400,hcost:0};
 const DEF_M={leads:60,rows:[
  ["Curieux, pas de projet daté, hors France ou hors périmètre","Rien. On répond, on garde le contact.",30,0,0],
@@ -210,7 +217,7 @@ const DEF_M={leads:60,rows:[
  ["« Mon local n'est pas classé restaurant »","Changement de destination",3,37,1200],
  ["« Les voisins se plaignent du bruit »","Diagnostic acoustique",2,37,2300],
  ["« Mes devis sont-ils cohérents ? »","Analyse de devis + visite",3,45,720]]};
-const KEY="restoplan-v8";
+const KEY="restoplan-v9";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -301,6 +308,24 @@ function render(){
     <div class="kpi"><b>${k(years[0].r)}</b><span>CA HT an 1 · EBITDA <span class="${cls(years[0].ebitda)}">${k(years[0].ebitda)}</span></span></div>
     <div class="kpi"><b class="${cls(cum.e)}">${k(cum.e)}</b><span>EBITDA cumulé 3 ans, sur ${k(cum.r)} de CA</span></div>`;
 
+  // 5. N clients
+  const NS=[50,100,250,500,1000], mkTotal=proj, prudent=mk.rows.slice(0,2).reduce((a,r)=>a+r[2],0);
+  const nrows=NS.map(N=>{const c=N*v.ppp,r=c*panier,net=Math.max(0,N-hal[0]),rD=net*v.ppp*panier,pay=r*p.paiement/100,mkt=rD*p.mkt/100,fix=(p.soft+p.juri+p.ops)*12,prod=r*p.expert/100,hours=c*p.hcmd,res=r-prod-pay-mkt-fix,resH=hours?res/hours:0;
+    return {N,c,r,pay,mkt,fix,prod,hours,etp:p.hetp?hours/p.hetp:0,res,resH,sh:mkTotal?N/mkTotal:0,shp:prudent?N/prudent:0};});
+  const nrow=(l,f,c="")=>`<tr class="${c}"><td>${l}</td>${nrows.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
+  $("#nt").innerHTML=`<thead><tr><th>Clients / an</th>${NS.map(N=>`<th>${n0(N)}</th>`).join("")}</tr></thead><tbody>
+    ${nrow("Commandes",y=>n0(y.c))}
+    ${nrow("Chiffre d'affaires HT",y=>k(y.r),"tot")}
+    ${nrow("Sous-traitance",y=>"−"+k(y.prod),"sub")}
+    ${nrow("Paiement",y=>"−"+k(y.pay),"sub")}
+    ${nrow("Marketing (au-delà du réseau)",y=>"−"+k(y.mkt),"sub")}
+    ${nrow("Charges fixes",y=>"−"+k(y.fix),"sub")}
+    ${nrow("Résultat avant rémunération",y=>`<span class="${cls(y.res)}">${k(y.res)}</span>`,"tot")}
+    ${nrow("Heures de production",y=>n0(y.hours)+" h")}
+    ${nrow("Personnes à plein temps",y=>n1(y.etp)+" ETP")}
+    ${nrow("Résultat par heure de production",y=>`<span class="${cls(y.resH)}">${eur(y.resH)} / h</span>`,"big")}
+    ${nrow("Part du marché (62 k / 35 k)",y=>`${pct(y.sh)} <span class="muted">/ ${pct(y.shp)}</span>`,"sub")}</tbody>`;
+  $("#nnote").textContent=`Lecture : à ${n0(p.hcmd)} h par commande, le résultat par heure est ce que le propriétaire gagne de l'heure s'il produit tout lui-même, ou ce qu'il peut payer un architecte salarié tout en restant à l'équilibre. Si ce chiffre est proche d'un taux horaire d'architecte classique, Restoplan est un cabinet avec un bon site ; s'il est nettement au-dessus, l'activité s'industrialise. La part de marché est calculée sur le scénario central puis sur le socle prudent.`;
   // 5. leads
   const m=st.m, mb=$("#mt tbody"); mb.innerHTML=""; let share=0,mc=0,mca=0;
   m.rows.forEach((r,i)=>{const [d,s,sh,cv,amt]=r,c=m.leads*sh/100*cv/100; share+=sh; mc+=c; mca+=c*amt;
