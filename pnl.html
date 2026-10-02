@@ -22,7 +22,7 @@
   section{margin-bottom:34px;scroll-margin-top:70px}
   h2{font-size:clamp(20px,2.6vw,26px);letter-spacing:-.04em;color:var(--navy);margin:0 0 4px}
   p.lead{color:var(--muted);margin:0 0 14px;max-width:820px;font-size:14.5px}
-  .top{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+  .top{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
   .kpi{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px}
   .kpi b{display:block;font-size:26px;letter-spacing:-.04em;color:var(--navy);line-height:1.1}
   .kpi span{font-size:12.5px;color:var(--muted)}
@@ -73,11 +73,26 @@
   <p>Une seule page. Les services du catalogue, combien de fois chacun se vend dans l'année et à quel moment, donnent le volume et le chiffre d'affaires. Les charges donnent le résultat. En bas, un contrôle côté leads pour vérifier que l'histoire tient. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
 </div></header>
 <nav class="toc"><div class="wrap">
-  <a href="#services">1. Les services</a><a href="#saison">2. Quand</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#leads">5. Vérification</a><a href="index.html">Catalogue</a>
+  <a href="#marche">0. Le marché</a><a href="#services">1. Les services</a><a href="#saison">2. Quand</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#leads">5. Vérification</a><a href="index.html">Catalogue</a>
 </div></nav>
 
 <main class="wrap">
 <div class="top" id="kpis"></div>
+
+<section id="marche">
+  <h2>0. Le marché : combien de projets par an en France</h2>
+  <p class="lead">Événements-projets uniques par an, sans double compte : une reprise qui déclenche une enseigne, une DP et un dossier ERP compte une fois. Chiffres de la <a href="docs/recherche-marche.md">recherche de marché</a> (oct. 2026). La colonne centrale est modifiable ; bas et haut sont donnés pour mémoire.</p>
+  <div class="panel">
+    <table id="mk"><thead><tr><th>Événement déclencheur</th><th class="hide-m">Bas</th><th>Central</th><th class="hide-m">Haut</th><th>Fiabilité</th></tr></thead><tbody></tbody></table>
+    <div class="params" style="margin-top:16px">
+      <label class="pf">Prestations payées par projet<small>une reprise achète souvent plusieurs mini-services</small><input data-mk="ppp" type="number" min="0.5" max="5" step="0.1"></label>
+      <div class="pf">Prestations potentielles / an<small>projets × prestations par projet</small><b id="mkPrest" style="display:block;font-size:22px;color:var(--navy);margin-top:6px"></b></div>
+      <div class="pf">Part de marché des services (bloc 1)<small>commandes an 1 ÷ prestations potentielles</small><b id="mkShare" style="display:block;font-size:22px;color:var(--navy);margin-top:6px"></b></div>
+      <div class="pf">Projets qui nous contactent (bloc 5)<small>leads × 12 ÷ projets uniques</small><b id="mkLeads" style="display:block;font-size:22px;color:var(--navy);margin-top:6px"></b></div>
+    </div>
+    <p class="note">Solide : les cessions (BODACC/Altares). À filtrer : les créations d'entreprises, dont la moitié n'a pas de vrai local. Faible : travaux du parc, enseignes, DP, terrasses hors Paris, injonctions. Aucune statistique nationale n'existe sur les DP commerciales ni sur les autorisations ERP : ce sont des hypothèses à remplacer par les données Restoplan. Version prudente de la même recherche : ne garder que ouvertures + reprises (≈ 35 000) en mettant les trois dernières lignes à zéro.</p>
+  </div>
+</section>
 
 <section id="services">
   <h2>1. Les 54 services : combien de fois</h2>
@@ -134,7 +149,15 @@ const SEASONS={
   rentree:["Rentrée + janvier",[1.4,1,1,.9,.8,.8,.6,.3,1.6,1.3,1,.8]],
   ete:["Fermetures d'été",[1.2,.7,.8,.8,.8,1,1.6,1.8,.9,.8,.7,.6]],
   controle:["Contrôles",[1,1,1,1,1,1.2,.8,.4,1.1,1,1,.9]],
+  marche:["Prior marché (recherche)",[9.5,8,8.5,8.5,8.5,8,7,5.5,10.5,9.5,9,7.5]],
 };
+// Marché : [libellé, bas, central, haut, fiabilité]
+const DEF_MK={ppp:1.4,rows:[
+ ["Ouvertures physiques nouvelles",20000,25000,30000,"Extrapolation (47 590 créations filtrées)"],
+ ["Reprises / cessions de fonds",9500,10000,10500,"Solide (BODACC / Altares 2025)"],
+ ["Travaux significatifs du parc existant",10800,17000,23400,"Extrapolation (6–13 % du parc)"],
+ ["Terrasse, enseigne, façade, destination hors projet plus large",5000,9000,15000,"Extrapolation forte"],
+ ["Contrôles et injonctions générant un aménagement",500,1100,2000,"Extrapolation forte"]]};
 const DEF_S=[[24,"rentree"],[4,"rentree"],[6,"rentree"],[10,"rentree"],[12,"rentree"],[5,"flat"],[6,"rentree"],[3,"rentree"],[4,"rentree"],[10,"printemps"],[2,"rentree"],[6,"flat"],[12,"printemps"],[5,"rentree"],[8,"printemps"],[5,"printemps"],[3,"printemps"],[2,"flat"],[1,"flat"],[5,"flat"],[5,"rentree"],[2,"flat"],[6,"controle"],[2,"controle"],[4,"printemps"],[3,"controle"],[4,"controle"],[2,"controle"],[2,"controle"],[3,"controle"],[2,"printemps"],[3,"ete"],[8,"flat"],[5,"controle"],[3,"flat"],[1,"flat"],[4,"ete"],[1,"ete"],[5,"ete"],[6,"ete"],[4,"ete"],[8,"ete"],[3,"ete"],[2,"ete"],[5,"controle"],[3,"controle"],[3,"controle"],[3,"flat"],[4,"controle"],[1,"flat"],[2,"flat"],[0,"flat"],[0,"flat"],[0,"flat"]];
 const DEF_P={g2:1.3,g3:1.75,expert:0,paiement:2.2,mkt:8,soft:300,juri:600,ops:850};
 const DEF_M={leads:60,rows:[
@@ -151,7 +174,7 @@ const DEF_M={leads:60,rows:[
  ["« Mon local n'est pas classé restaurant »","Changement de destination",3,37,1200],
  ["« Les voisins se plaignent du bruit »","Diagnostic acoustique",2,37,2300],
  ["« Mes devis sont-ils cohérents ? »","Analyse de devis + visite",3,45,720]]};
-const KEY="restoplan-v5";
+const KEY="restoplan-v6";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -165,11 +188,13 @@ function load(){try{st=JSON.parse(localStorage.getItem(KEY))}catch(e){}
   if(!st) st={};
   if(!st.s||st.s.length!==ITEMS.length) st.s=clone(DEF_S);
   st.p=Object.assign(clone(DEF_P),st.p||{});
-  if(!st.m||!st.m.rows) st.m=clone(DEF_M);}
+  if(!st.m||!st.m.rows) st.m=clone(DEF_M);
+  if(!st.mk||!st.mk.rows) st.mk=clone(DEF_MK);}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 
-function keepFocus(fn){const a=document.activeElement,sel=a&&a.dataset&&(a.dataset.k||a.dataset.i)?{k:a.dataset.k,i:a.dataset.i,j:a.dataset.j,t:a.tagName.toLowerCase()}:null; fn();
-  if(sel){const q=sel.k?`[data-k="${sel.k}"]`:`${sel.t}[data-i="${sel.i}"]${sel.j?`[data-j="${sel.j}"]`:""}`;const n=document.querySelector(q);n&&n.focus();}}
+function keepFocus(fn){const a=document.activeElement,d=a&&a.dataset||{};
+  const q=d.k?`[data-k="${d.k}"]`:d.mk?`[data-mk="${d.mk}"]`:d.mki!==undefined?`[data-mki="${d.mki}"]`:d.i!==undefined?`${a.tagName.toLowerCase()}[data-i="${d.i}"]${d.j?`[data-j="${d.j}"]`:""}`:null;
+  fn(); if(q){const n=document.querySelector(q);n&&n.focus();}}
 
 function render(){
   // 1. services
@@ -225,6 +250,20 @@ function render(){
   $("#check").innerHTML=`<div>Leads par mois<b><input data-k="leads" type="number" min="0" step="5" value="${m.leads}"></b>formulaire, chatbot, appels</div>
     <div>Côté leads<b>${n1(mc)} cmd / mois</b>panier ${mc?eur(mca/mc):"—"}, conversion ${m.leads?pct(mc/m.leads):"—"}</div>
     <div>Côté services<b>${n1(cmd/12)} cmd / mois</b>panier ${eur(panier)} · écart <span class="${Math.abs(diff)>.25?"neg":"pos"}" style="font-weight:800">${diff>0?"+":""}${pct(diff)}</span></div>`;
+  // 0. marché
+  const mk=st.mk, kb=$("#mk tbody"); kb.innerHTML=""; let proj=0;
+  mk.rows.forEach((r,i)=>{const [l,lo,c,hi,f]=r; proj+=c;
+    kb.insertAdjacentHTML("beforeend",`<tr><td>${l}</td><td class="muted hide-m">${lo.toLocaleString("fr-FR")}</td><td><input class="w" data-mki="${i}" type="number" min="0" step="100" value="${c}"></td><td class="muted hide-m">${hi.toLocaleString("fr-FR")}</td><td class="muted">${f}</td></tr>`);});
+  const lo=mk.rows.reduce((a,r)=>a+r[1],0),hi=mk.rows.reduce((a,r)=>a+r[3],0);
+  kb.insertAdjacentHTML("beforeend",`<tr class="tot"><td>Projets uniques / an</td><td class="hide-m">${lo.toLocaleString("fr-FR")}</td><td>${proj.toLocaleString("fr-FR")}</td><td class="hide-m">${hi.toLocaleString("fr-FR")}</td><td class="muted" style="font-weight:500">≈ ${Math.round(proj/12).toLocaleString("fr-FR")} / mois</td></tr>`);
+  const ppi=$('[data-mk="ppp"]'); if(document.activeElement!==ppi) ppi.value=mk.ppp;
+  const prest=proj*mk.ppp;
+  $("#mkPrest").textContent=Math.round(prest).toLocaleString("fr-FR");
+  $("#mkShare").textContent=prest?pct(cmd/prest):"—";
+  $("#mkLeads").textContent=proj?pct(m.leads*12/proj):"—";
+  $("#kpis").insertAdjacentHTML("afterbegin",`<div class="kpi"><b>${prest?pct(cmd/prest):"—"}</b><span>part de marché an 1, sur ${Math.round(prest/1000)} k prestations potentielles</span></div>`);
+  document.querySelectorAll("#mk input").forEach(el=>el.addEventListener("input",()=>{st.mk.rows[+el.dataset.mki][2]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
+  ppi.oninput=()=>{st.mk.ppp=Number(ppi.value)||1; save(); keepFocus(render);};
   // listeners
   document.querySelectorAll("#t input,#t select").forEach(el=>el.addEventListener("input",()=>{const i=+el.dataset.i; if(el.tagName==="INPUT") st.s[i][0]=Math.max(0,Number(el.value)||0); else st.s[i][1]=el.value; save(); keepFocus(render);}));
   document.querySelectorAll("#params input").forEach(el=>el.addEventListener("input",()=>{st.p[el.dataset.k]=Number(el.value)||0; save(); keepFocus(render);}));
