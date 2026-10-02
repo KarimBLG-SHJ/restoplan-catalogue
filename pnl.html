@@ -72,7 +72,6 @@
     <div class="f"><label>Serveurs & abonnements</label><input data-k="soft" type="number" min="0" step="50"></div>
     <div class="f"><label>Assurance & juridique</label><input data-k="juri" type="number" min="0" step="50"></div>
     <div class="f"><label>Support & opérations</label><input data-k="ops" type="number" min="0" step="50"></div>
-    <div class="f3"><label>Rémunération fondateur</label><input data-k="fond1" type="number" min="0" step="100"><input data-k="fond2" type="number" min="0" step="100"><input data-k="fond3" type="number" min="0" step="100"></div>
 
     <button class="reset" id="reset">Revenir au scénario central</button>
     <p class="note">Paiement ≈ 2,2 %, marketing ≈ 8 % du CA. Le volume et le panier peuvent venir du <a href="mix.html">mix des demandes</a>. Catalogue des prestations <a href="index.html">ici</a>.</p>
@@ -86,8 +85,8 @@
 </main>
 
 <script>
-const DEF={cmd1:20,cmd2:26,cmd3:35,panier:990,expert:0,paiement:2.2,mkt:8,soft:300,juri:600,ops:850,fond1:2000,fond2:3000,fond3:4000};
-const KEY="restoplan-pnl-v2";
+const DEF={cmd1:20,cmd2:26,cmd3:35,panier:990,expert:0,paiement:2.2,mkt:8,soft:300,juri:600,ops:850};
+const KEY="restoplan-pnl-v3";
 const $=s=>document.querySelector(s);
 const inputs=[...document.querySelectorAll("#inputs input")];
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -106,13 +105,13 @@ function calc(){
     const cmd=v["cmd"+y]*12, ca=cmd*v.panier;
     const prod=ca*v.expert/100, mb=ca-prod;
     const pay=ca*v.paiement/100, mkt=ca*v.mkt/100;
-    const soft=v.soft*12, juri=v.juri*12, ops=v.ops*12, fond=v["fond"+y]*12;
-    const charges=pay+mkt+soft+juri+ops+fond;
+    const soft=v.soft*12, juri=v.juri*12, ops=v.ops*12;
+    const charges=pay+mkt+soft+juri+ops;
     const ebitda=mb-charges;
-    const fixes=soft+juri+ops+fond;
+    const fixes=soft+juri+ops;
     const contribPerCmd=v.panier*(1-v.expert/100-v.paiement/100-v.mkt/100);
     const be=contribPerCmd>0?fixes/12/contribPerCmd:Infinity;
-    return {cmd,ca,prod,mb,pay,mkt,soft,juri,ops,fond,charges,ebitda,be,contribPerCmd};
+    return {cmd,ca,prod,mb,pay,mkt,soft,juri,ops,charges,ebitda,be,contribPerCmd};
   });
   const row=(label,f,c="")=>`<tr class="${c}"><td>${label}</td>${years.map(y=>`<td>${f(y)}</td>`).join("")}</tr>`;
   $("#pl").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
@@ -125,7 +124,6 @@ function calc(){
     ${row("Serveurs & abonnements",y=>"−"+k(y.soft),"sub")}
     ${row("Assurance & juridique",y=>"−"+k(y.juri),"sub")}
     ${row("Support & opérations",y=>"−"+k(y.ops),"sub")}
-    ${row("Rémunération fondateur",y=>"−"+k(y.fond),"sub")}
     ${row("EBITDA",y=>`<span class="${cls(y.ebitda)}">${k(y.ebitda)}</span>`,"big")}
     ${row("Marge EBITDA",y=>`<span class="${cls(y.ebitda)}">${pct(y.ca?y.ebitda/y.ca:0)}</span>`)}
     ${row("Point mort (commandes / mois)",y=>isFinite(y.be)?Math.ceil(y.be):"—")}
