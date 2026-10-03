@@ -185,20 +185,19 @@
 </section>
 
 <section id="split">
-  <h2>6. Répartition entre la plateforme et les architectes</h2>
-  <p class="lead">Nous : tech, marketing, maintenance, évolutions. Eux : expertise, production, signature, relation client. La question n'est pas ce que nous prenons, c'est ce qu'il leur reste par commande une fois leur main-d'œuvre payée. Si ce reste est trop faible, ils devront monter les prix et Restoplan ne sera plus compétitif.</p>
+  <h2>6. Répartition entre associés : les coûts d'abord, le résultat ensuite</h2>
+  <p class="lead">Deux équipes dans une même start-up. L'équipe tech : plateforme, marketing, maintenance, évolutions, avec un coût fixe qui ne bouge pas avec le volume. L'équipe presta : expertise, production, signature, relation client, avec un coût qui suit les heures. Le chiffre d'affaires rembourse d'abord les coûts de chacun, dans l'ordre ci-dessous ; ce qui reste est partagé selon une clé convenue.</p>
   <div class="panel">
     <div class="params">
-      <label class="pf">Notre part, clients amenés par le marketing<small>% du CA HT</small><input data-s="sd" type="number" min="0" max="100" step="1"></label>
-      <label class="pf">Notre part, clients du réseau<small>% du CA HT</small><input data-s="sn" type="number" min="0" max="100" step="1"></label>
-      <label class="pf">Notre part, rachats et retours<small>% du CA HT</small><input data-s="sr" type="number" min="0" max="100" step="1"></label>
-      <label class="pf">Heures de main-d'œuvre par commande<small>hypothèse pour ce calcul, à remplacer par la sienne</small><input data-s="h" type="number" min="0" step="0.5"></label>
-      <label class="pf">Coût horaire chargé de son équipe<small>mix junior / senior en supervision</small><input data-s="c" type="number" min="0" step="5"></label>
+      <label class="pf">Fixe équipe tech<small>€ / mois : dev, contenu, maintenance, évolutions. Ne varie pas.</small><input data-s="tf" type="number" min="0" step="100"></label>
+      <label class="pf">Heures de production par commande<small>côté presta, hypothèse à remplacer par la sienne</small><input data-s="h" type="number" min="0" step="0.5"></label>
+      <label class="pf">Taux horaire interne de la production<small>€ / h chargé, mix junior / senior. C'est un coût remboursé, pas un prix de vente.</small><input data-s="c" type="number" min="0" step="5"></label>
+      <label class="pf">Clé de partage du résultat, part tech<small>% ; le reste va à la presta</small><input data-s="key" type="number" min="0" max="100" step="5"></label>
     </div>
-    <h3>Par commande moyenne</h3>
-    <table id="spc"></table>
-    <h3>Par an</h3>
+    <h3>La cascade, par an</h3>
     <table id="spy"></table>
+    <h3>Ce que chaque équipe encaisse au total</h3>
+    <table id="spt"></table>
     <p class="note" id="spnote"></p>
   </div>
 </section>
@@ -224,9 +223,9 @@ const DEF_MK={rows:[
  ["Terrasse, enseigne, façade, destination hors projet plus large",5000,9000,15000,"Extrapolation forte"],
  ["Contrôles et injonctions générant un aménagement",500,1100,2000,"Extrapolation forte"]]};
 const DEF_V={ld1:40,ld2:55,ld3:75,cd1:25,cd2:28,cd3:30,ln1:7,ln2:6,ln3:5,cn1:50,cn2:50,cn3:50,pp1:1.4,rb:25,rt:15,ppr:1.2};
-const DEF_SP={sd:30,sn:12,sr:15,h:5,c:50};
+const DEF_SP={tf:2500,h:5,c:50,key:50};
 const DEF_P={expert:0,paiement:2.2,cpl:40,soft:300,juri:600,ops:850,hcmd:0,hetp:1400,hcost:0};
-const KEY="restoplan-v12";
+const KEY="restoplan-v13";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -342,34 +341,28 @@ function render(){
     ${nrow("Résultat par heure de production",y=>p.hcmd?`<span class="${cls(y.resH)}">${eur(y.resH)} / h</span>`:`<span class="muted">—</span>`,"big")}
     ${nrow("Part du marché (62 k / 35 k)",y=>`${pct(y.sh)} <span class="muted">/ ${pct(y.shp)}</span>`,"sub")}</tbody>`;
   $("#nnote").textContent=p.hcmd?`Lecture : à ${n1(p.hcmd)} h par commande, le résultat par heure est ce que la production rapporte une fois tout payé sauf le temps lui-même. À comparer au coût horaire réel de l'équipe (juniors, senior en supervision) pour savoir ce qui reste au propriétaire. La part de marché est calculée sur le scénario central puis sur le socle prudent.`:`Les heures par commande ne sont pas renseignées (bloc 3) : le résultat affiché est avant tout coût de production humaine. Renseignez-les pour obtenir les heures, les personnes nécessaires et le résultat par heure. La part de marché est calculée sur le scénario central puis sur le socle prudent.`;
-  // 6. répartition
+  // 6. répartition en cascade
   const sp=st.sp; setVals("#split input",sp);
-  const caD=newD.map((n,i)=>cmdNew[i]*panier*(news[i]?n/news[i]:0)), caN=newN.map((n,i)=>cmdNew[i]*panier*(news[i]?n/news[i]:0)), caR=cmdRet.map(c=>c*panier);
-  const ours=caD.map((x,i)=>x*sp.sd/100+caN[i]*sp.sn/100+caR[i]*sp.sr/100);
-  const ourCost=leadsD.map(l=>l*p.cpl+p.soft*12), ourNet=ours.map((o,i)=>o-ourCost[i]);
-  const labor=cmds.map(c=>c*sp.h*sp.c), theirFix=(p.juri+p.ops)*12;
-  const theirs=years.map((y,i)=>y.r-ours[i]), theirNet=theirs.map((t,i)=>t-labor[i]-theirFix-years[i].pay);
-  const blend=years[0].r?ours[0]/years[0].r:0, lab1=sp.h*sp.c;
+  const labor=cmds.map(c=>c*sp.h*sp.c), techFix=years.map((y,i)=>sp.tf*12+p.soft*12+leadsD[i]*p.cpl), prestaFix=(p.juri+p.ops)*12;
+  const pay=years.map(y=>y.pay), rest=years.map((y,i)=>y.r-pay[i]-labor[i]-techFix[i]-prestaFix);
+  const techShare=rest.map(r=>r*sp.key/100), prestaShare=rest.map(r=>r*(1-sp.key/100));
+  const techTotal=techShare.map((t,i)=>t+sp.tf*12), prestaTotal=prestaShare.map((t,i)=>t+labor[i]);
   const rowS=(l,f,c="")=>`<tr class="${c}"><td>${l}</td>${[0,1,2].map(i=>`<td>${f(i)}</td>`).join("")}</tr>`;
-  $("#spc").innerHTML=`<thead><tr><th></th><th>Client marketing</th><th>Client réseau</th><th>Rachat</th></tr></thead><tbody>
-    <tr><td>Prix moyen HT</td><td>${eur(panier)}</td><td>${eur(panier)}</td><td>${eur(panier)}</td></tr>
-    <tr class="sub"><td>Notre part</td><td>−${eur(panier*sp.sd/100)}</td><td>−${eur(panier*sp.sn/100)}</td><td>−${eur(panier*sp.sr/100)}</td></tr>
-    <tr class="sub"><td>Sa main-d'œuvre (${n1(sp.h)} h × ${eur(sp.c)})</td><td>−${eur(lab1)}</td><td>−${eur(lab1)}</td><td>−${eur(lab1)}</td></tr>
-    <tr class="sub"><td>Paiement</td><td>−${eur(panier*p.paiement/100)}</td><td>−${eur(panier*p.paiement/100)}</td><td>−${eur(panier*p.paiement/100)}</td></tr>
-    ${[sp.sd,sp.sn,sp.sr].map(()=>"").join("")}
-    <tr class="tot"><td>Ce qu'il lui reste par commande</td>${[sp.sd,sp.sn,sp.sr].map(x=>{const r=panier*(1-x/100-p.paiement/100)-lab1;return `<td><span class="${cls(r)}">${eur(r)}</span> <span class="muted" style="font-weight:500">(${pct(panier?r/panier:0)})</span></td>`;}).join("")}</tr></tbody>`;
   $("#spy").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
-    ${rowS("CA HT Restoplan",i=>k(years[i].r),"tot")}
-    ${rowS("Notre part brute",i=>k(ours[i])+` <span class="muted" style="font-weight:500">(${pct(years[i].r?ours[i]/years[i].r:0)})</span>`)}
-    ${rowS("Nos coûts : acquisition + serveurs",i=>"−"+k(ourCost[i]),"sub")}
-    ${rowS("Notre net, avant notre temps",i=>`<span class="${cls(ourNet[i])}">${k(ourNet[i])}</span>`,"big")}
-    ${rowS("Leur part brute",i=>k(theirs[i]))}
-    ${rowS("Leur main-d'œuvre",i=>"−"+k(labor[i]),"sub")}
-    ${rowS("Leurs fixes : assurance, juridique, support",i=>"−"+k(theirFix),"sub")}
-    ${rowS("Paiement",i=>"−"+k(years[i].pay),"sub")}
-    ${rowS("Leur net, après main-d'œuvre",i=>`<span class="${cls(theirNet[i])}">${k(theirNet[i])}</span>`,"big")}
-    ${rowS("Heures de production chez eux",i=>n0(cmds[i]*sp.h)+" h = "+n1(p.hetp?cmds[i]*sp.h/p.hetp:0)+" ETP","sub")}</tbody>`;
-  $("#spnote").textContent=`Part moyenne an 1 : ${pct(blend)} du CA. Test de compétitivité : un acteur en ligne vend un dossier enseigne 399 € ; chez nous le même service est à 360 €, notre part en prend ${eur(360*sp.sd/100)}, sa main-d'œuvre ${eur(lab1)} si le dossier prend ${n1(sp.h)} h : il lui reste ${eur(360*(1-sp.sd/100-p.paiement/100)-lab1)}. Si ce chiffre est négatif, la part ou les heures sont fausses pour les petits services.`;
+    ${rowS("CA HT encaissé",i=>k(years[i].r),"tot")}
+    ${rowS("1. Frais de paiement",i=>"−"+k(pay[i]),"sub")}
+    ${rowS("2. Production presta (heures × taux interne)",i=>"−"+k(labor[i])+` <span class="muted" style="font-weight:500">${n0(cmds[i]*sp.h)} h</span>`,"sub")}
+    ${rowS("3. Fixe tech : équipe + serveurs + acquisition",i=>"−"+k(techFix[i]),"sub")}
+    ${rowS("4. Fixe presta : assurance, juridique, support",i=>"−"+k(prestaFix),"sub")}
+    ${rowS("Résultat à partager",i=>`<span class="${cls(rest[i])}">${k(rest[i])}</span>`,"tot")}
+    ${rowS(`→ Tech (${sp.key} %)`,i=>k(techShare[i]))}
+    ${rowS(`→ Presta (${100-sp.key} %)`,i=>k(prestaShare[i]))}</tbody>`;
+  $("#spt").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
+    ${rowS("Équipe tech : fixe remboursé + part du résultat",i=>`<span class="${cls(techTotal[i])}">${k(techTotal[i])}</span> <span class="muted" style="font-weight:500">(${pct(years[i].r?techTotal[i]/years[i].r:0)} du CA)</span>`,"big")}
+    ${rowS("Équipe presta : production remboursée + part du résultat",i=>`<span class="${cls(prestaTotal[i])}">${k(prestaTotal[i])}</span> <span class="muted" style="font-weight:500">(${pct(years[i].r?prestaTotal[i]/years[i].r:0)} du CA)</span>`,"big")}
+    ${rowS("Dont sûr pour la tech (le fixe)",i=>k(sp.tf*12),"sub")}
+    ${rowS("Dont variable pour la tech",i=>k(techShare[i]),"sub")}</tbody>`;
+  $("#spnote").textContent=`Ordre de la cascade : la production est remboursée avant le fixe tech, parce qu'une commande livrée doit toujours payer celui qui l'a produite. Si le CA ne couvre pas tout, les fixes non remboursés sont reportés (compte courant d'associé), ils ne sont pas perdus. Le taux horaire interne est un coût de revient convenu entre associés, pas le prix auquel la presta vendrait son heure à l'extérieur : c'est la clé de partage qui rémunère le risque et l'expertise, pas le taux.`;
   document.querySelectorAll("#split input").forEach(el=>el.addEventListener("input",()=>{st.sp[el.dataset.s]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
   // listeners
   document.querySelectorAll("#mk input").forEach(el=>el.addEventListener("input",()=>{st.mk.rows[+el.dataset.mki][2]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
