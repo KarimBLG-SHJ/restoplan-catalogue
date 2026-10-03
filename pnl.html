@@ -76,11 +76,11 @@
 <body>
 <header><div class="wrap">
   <div class="brand"><span class="brand-mark">R</span> Restoplan</div>
-  <h1>Business plan : marché, prix, et ce qu'on vise</h1>
-  <p>D'abord ce qu'on sait du marché et comment chaque prix a été fixé. Ensuite un P&L construit par cohortes : des contacts qui arrivent, une part qui commande, une part qui rachète, puis seulement à la fin la part du marché français que cela représente. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
+  <h1>Business plan : marché, prix, cohortes, et qui gagne quoi</h1>
+  <p>D'abord ce qu'on sait du marché et comment chaque prix a été fixé. Ensuite un P&L par cohortes : des contacts qui arrivent, une part qui commande, une part qui rachète. Enfin la répartition : Restoplan est la société de l'architecte, le moteur est le nôtre, mis à disposition sous licence exclusive. Qui gagne quoi, année par année. Hors taxes, tout est modifiable, les valeurs restent dans ce navigateur.</p>
 </div></header>
 <nav class="toc"><div class="wrap">
-  <a href="#marche">A. Le marché</a><a href="#prix">B. Les prix</a><a href="#vise">1. Cohortes</a><a href="#mix">2. Mix de services</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#n">5. À N clients</a><a href="#split">6. Répartition</a><a href="index.html">Catalogue</a>
+  <a href="#marche">A. Le marché</a><a href="#prix">B. Les prix</a><a href="#vise">1. Cohortes</a><a href="#mix">2. Mix de services</a><a href="#charges">3. Charges</a><a href="#pl">4. P&L</a><a href="#n">5. À N clients</a><a href="#split">6. Qui gagne quoi</a><a href="index.html">Catalogue</a>
 </div></nav>
 
 <main class="wrap">
@@ -119,6 +119,7 @@
   <h2>1. Les cohortes : des contacts aux commandes</h2>
   <p class="lead">Deux sources de contacts. Le marché diffus : site, SEO, recommandation, avec un coût par lead. Le réseau halal : 3 à 4 masters franchisés, 150 à 200 restaurants, des contacts qui ne coûtent rien en acquisition et convertissent mieux. Chaque nouveau client passe une première commande, une part rachète dans l'année, et une part des clients de l'année précédente revient.</p>
   <div class="panel">
+    <div class="actions" style="margin:0 0 14px"><span class="muted">Scénario de leads :</span><button data-sc="prudent">Prudent · 20 / 30 / 40 par mois</button><button data-sc="central">Central · 40 / 55 / 75</button><button data-sc="haut">Haut · 60 / 80 / 100</button></div>
     <table id="vt"><thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
       <tr class="cat"><td colspan="4">Marché diffus</td></tr>
       <tr><td>Leads par mois</td><td><input data-v="ld1" type="number" min="0" step="5"></td><td><input data-v="ld2" type="number" min="0" step="5"></td><td><input data-v="ld3" type="number" min="0" step="5"></td></tr>
@@ -185,23 +186,24 @@
 </section>
 
 <section id="split">
-  <h2>6. Ce que l'architecte nous paie : ticket, fixe, redevance d'usage</h2>
-  <p class="lead">L'architecte est notre client. Il ne partage pas ses honoraires, sa déontologie le lui interdit et il a raison. Il achète un service : la plateforme, son marketing, sa maintenance, ses évolutions. Le prix de ce service a trois morceaux : un ticket d'entrée pour la plateforme, un fixe mensuel pour la faire tourner, et une redevance par commande traitée qui lui permet d'amortir le reste sur son activité réelle. Moins il paie de fixe, plus la redevance est haute, parce que nous portons alors les charges à sa place.</p>
+  <h2>6. Qui gagne quoi : Restoplan (lui) et le moteur (nous)</h2>
+  <p class="lead">Restoplan est sa société : la marque, les clients, les honoraires sont à lui. Le moteur est le nôtre : il l'utilise sous licence exclusive, habillé à sa marque. Il nous paie un ticket d'entrée, un fixe mensuel et une redevance par commande traitée. Sa déontologie est respectée : il loue un outil et un service, il ne partage pas d'honoraires. Ci-dessous, ce que chacun gagne, avec les charges de chacun.</p>
   <div class="panel">
-    <div class="actions" style="margin:0 0 16px">
-      <button data-preset="A">A · Il porte ses fixes</button><button data-preset="B">B · On porte tout</button><button data-preset="C">C · Intermédiaire</button>
-    </div>
+    <div class="actions" style="margin:0 0 16px"><span class="muted">Formule :</span><button data-preset="A">A · 15 k€ + 2 500 €/mois + 8 %, il finance l'acquisition</button><button data-preset="B">B · 5 k€ + 0 + 22 %, on finance tout</button><button data-preset="C">C · 5 k€ + 1 000 €/mois + 15 %, on finance l'acquisition</button></div>
     <div class="params">
-      <label class="pf">Ticket d'entrée plateforme<small>€ une fois. Valeur 15 000 € ; la remise est le prix de la redevance.</small><input data-s="ticket" type="number" min="0" step="500"></label>
-      <label class="pf">Fixe mensuel qu'il nous paie<small>€ / mois : serveurs, maintenance, évolutions, et marketing s'il le finance</small><input data-s="fee" type="number" min="0" step="100"></label>
-      <label class="pf">Redevance par commande traitée<small>% du HT de la commande passée par la plateforme</small><input data-s="rate" type="number" min="0" max="100" step="0.5"></label>
-      <label class="pf">Qui finance l'acquisition<small>1 = nous (leads × coût par lead à notre charge), 0 = lui</small><input data-s="wemkt" type="number" min="0" max="1" step="1"></label>
-      <label class="pf">Heures de production par commande<small>côté architecte, pour calculer ce qu'il lui reste</small><input data-s="h" type="number" min="0" step="0.5"></label>
+      <label class="pf">Ticket d'entrée<small>€ une fois, valeur 15 000 €</small><input data-s="ticket" type="number" min="0" step="500"></label>
+      <label class="pf">Fixe mensuel<small>€ / mois</small><input data-s="fee" type="number" min="0" step="100"></label>
+      <label class="pf">Redevance par commande<small>% du HT</small><input data-s="rate" type="number" min="0" max="100" step="0.5"></label>
+      <label class="pf">Acquisition financée par nous<small>1 = oui, 0 = par lui</small><input data-s="wemkt" type="number" min="0" max="1" step="1"></label>
+      <label class="pf">Ses heures par commande<small>hypothèse, à remplacer par la sienne</small><input data-s="h" type="number" min="0" step="0.5"></label>
       <label class="pf">Coût horaire de son équipe<small>€ / h chargé</small><input data-s="c" type="number" min="0" step="5"></label>
+      <label class="pf">Coût de notre équipe<small>€ / mois : dev, contenu, maintenance</small><input data-s="team" type="number" min="0" step="100"></label>
     </div>
-    <h3>Ce que ça donne, par an</h3>
+    <h3>Lui : Restoplan</h3>
     <table id="spy"></table>
-    <h3>Les trois formules côte à côte, an 1</h3>
+    <h3>Nous : le moteur</h3>
+    <table id="spu"></table>
+    <h3>Les trois formules, cumul sur trois ans</h3>
     <table id="spt"></table>
     <p class="note" id="spnote"></p>
   </div>
@@ -229,9 +231,10 @@ const DEF_MK={rows:[
  ["Contrôles et injonctions générant un aménagement",500,1100,2000,"Extrapolation forte"]]};
 const DEF_V={ld1:40,ld2:55,ld3:75,cd1:25,cd2:28,cd3:30,ln1:7,ln2:6,ln3:5,cn1:50,cn2:50,cn3:50,pp1:1.4,rb:25,rt:15,ppr:1.2};
 const PRESETS={A:{ticket:15000,fee:2500,rate:8,wemkt:0},B:{ticket:5000,fee:0,rate:22,wemkt:1},C:{ticket:5000,fee:1000,rate:15,wemkt:1}};
-const DEF_SP=Object.assign({h:5,c:50},PRESETS.C);
+const DEF_SP=Object.assign({h:5,c:50,team:2000},PRESETS.C);
+const SCEN={prudent:{ld1:20,ld2:30,ld3:40},central:{ld1:40,ld2:55,ld3:75},haut:{ld1:60,ld2:80,ld3:100}};
 const DEF_P={expert:0,paiement:2.2,cpl:40,soft:300,juri:600,ops:850,hcmd:0,hetp:1400,hcost:0};
-const KEY="restoplan-v14";
+const KEY="restoplan-v15";
 const $=s=>document.querySelector(s);
 const eur=n=>Math.round(n).toLocaleString("fr-FR")+" €";
 const k=n=>(Math.round(n/100)/10).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1})+" k€";
@@ -347,37 +350,47 @@ function render(){
     ${nrow("Résultat par heure de production",y=>p.hcmd?`<span class="${cls(y.resH)}">${eur(y.resH)} / h</span>`:`<span class="muted">—</span>`,"big")}
     ${nrow("Part du marché (62 k / 35 k)",y=>`${pct(y.sh)} <span class="muted">/ ${pct(y.shp)}</span>`,"sub")}</tbody>`;
   $("#nnote").textContent=p.hcmd?`Lecture : à ${n1(p.hcmd)} h par commande, le résultat par heure est ce que la production rapporte une fois tout payé sauf le temps lui-même. À comparer au coût horaire réel de l'équipe (juniors, senior en supervision) pour savoir ce qui reste au propriétaire. La part de marché est calculée sur le scénario central puis sur le socle prudent.`:`Les heures par commande ne sont pas renseignées (bloc 3) : le résultat affiché est avant tout coût de production humaine. Renseignez-les pour obtenir les heures, les personnes nécessaires et le résultat par heure. La part de marché est calculée sur le scénario central puis sur le socle prudent.`;
-  // 6. facturation tech
+  // 6. qui gagne quoi
   const sp=st.sp; setVals("#split input",sp);
-  const ourFixed=p.soft*12, mktCost=leadsD.map(l=>l*p.cpl);
+  const mktCost=leadsD.map(l=>l*p.cpl), hisFix=(p.juri+p.ops)*12;
   const calcF=(f,i)=>{const y=years[i],roy=y.r*f.rate/100,fee=f.fee*12,ticket=i===0?f.ticket:0,paid=roy+fee+ticket;
-    const ourCost=ourFixed+(f.wemkt?mktCost[i]:0),net=paid-ourCost;
-    const labor=cmds[i]*sp.h*sp.c,hisMkt=f.wemkt?0:mktCost[i],hisFix=(p.juri+p.ops)*12,his=y.r-y.pay-paid-labor-hisMkt-hisFix;
-    return {paid,roy,fee,ticket,ourCost,net,labor,hisMkt,his,share:y.r?paid/y.r:0};};
+    const labor=cmds[i]*sp.h*sp.c,hisMkt=f.wemkt?0:mktCost[i],his=y.r-y.pay-labor-hisFix-hisMkt-paid;
+    const ourMkt=f.wemkt?mktCost[i]:0,ours=paid-p.soft*12-ourMkt-sp.team*12;
+    return {roy,fee,ticket,paid,labor,hisMkt,his,ourMkt,ours};};
   const cur=[0,1,2].map(i=>calcF(sp,i));
   const rowS=(l,f,c="")=>`<tr class="${c}"><td>${l}</td>${[0,1,2].map(i=>`<td>${f(i)}</td>`).join("")}</tr>`;
+  const hisCum=cur.reduce((a,x)=>a+x.his,0), ourCum=cur.reduce((a,x)=>a+x.ours,0);
   $("#spy").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
-    ${rowS("CA HT de l'architecte via la plateforme",i=>k(years[i].r),"tot")}
-    ${rowS("Ticket d'entrée",i=>k(cur[i].ticket),"sub")}
-    ${rowS("Fixe mensuel × 12",i=>k(cur[i].fee),"sub")}
-    ${rowS("Redevance par commande",i=>k(cur[i].roy),"sub")}
-    ${rowS("Ce qu'il nous paie",i=>`${k(cur[i].paid)} <span class="muted" style="font-weight:500">(${pct(cur[i].share)} de son CA)</span>`,"tot")}
-    ${rowS("Nos charges : serveurs"+(sp.wemkt?" + acquisition":""),i=>"−"+k(cur[i].ourCost),"sub")}
-    ${rowS("Notre net, avant notre temps",i=>`<span class="${cls(cur[i].net)}">${k(cur[i].net)}</span>`,"big")}
-    ${rowS("Ce qu'il lui reste après nous, sa production"+(sp.wemkt?"":", son marketing")+" et ses fixes",i=>`<span class="${cls(cur[i].his)}">${k(cur[i].his)}</span> <span class="muted" style="font-weight:500">(${pct(years[i].r?cur[i].his/years[i].r:0)})</span>`,"big")}
-    ${rowS("Dont sûr pour nous (ticket + fixe)",i=>k(cur[i].ticket+cur[i].fee),"sub")}</tbody>`;
-  const P=Object.entries(PRESETS).map(([n,f])=>({n,f,r:calcF(Object.assign({},sp,f),0)}));
-  $("#spt").innerHTML=`<thead><tr><th></th>${P.map(x=>`<th>${x.n} · ${x.f.ticket/1000} k€ + ${x.f.fee} €/mois + ${x.f.rate} %</th>`).join("")}</tr></thead><tbody>
-    <tr><td>Qui finance l'acquisition</td>${P.map(x=>`<td>${x.f.wemkt?"nous":"lui"}</td>`).join("")}</tr>
-    <tr class="tot"><td>Ce qu'il nous paie an 1</td>${P.map(x=>`<td>${k(x.r.paid)} <span class="muted" style="font-weight:500">(${pct(x.r.share)})</span></td>`).join("")}</tr>
-    <tr class="sub"><td>dont sûr</td>${P.map(x=>`<td>${k(x.r.ticket+x.r.fee)}</td>`).join("")}</tr>
-    <tr class="sub"><td>dont variable</td>${P.map(x=>`<td>${k(x.r.roy)}</td>`).join("")}</tr>
-    <tr><td>Notre net an 1</td>${P.map(x=>`<td><span class="${cls(x.r.net)}">${k(x.r.net)}</span></td>`).join("")}</tr>
-    <tr><td>Ce qu'il lui reste an 1</td>${P.map(x=>`<td><span class="${cls(x.r.his)}">${k(x.r.his)}</span></td>`).join("")}</tr>
-    <tr class="sub"><td>Si le CA an 1 est divisé par deux, il nous paie</td>${P.map(x=>{const r=years[0].r/2*x.f.rate/100+x.f.fee*12+x.f.ticket;return `<td>${k(r)} <span class="muted">(${pct(years[0].r?r/(years[0].r/2):0)})</span></td>`;}).join("")}</tr></tbody>`;
-  $("#spnote").textContent=`Lecture : plus il porte de fixe (A), moins la redevance est haute et plus notre revenu est sûr, mais il paie même si ça ne vend pas. Plus nous portons (B), plus il est protégé au démarrage et plus nous sommes payés au succès. La redevance se facture comme des frais de plateforme par transaction, comme le fait Shopify : c'est une redevance d'usage d'un outil, pas une rétrocession d'honoraires. À faire valider par son conseil.`;
+    ${rowS("Honoraires HT encaissés",i=>k(years[i].r),"tot")}
+    ${rowS("Frais de paiement",i=>"−"+k(years[i].pay),"sub")}
+    ${rowS("Production : "+n1(sp.h)+" h × "+eur(sp.c),i=>"−"+k(cur[i].labor),"sub")}
+    ${rowS("Ses fixes : assurance, juridique, support",i=>"−"+k(hisFix),"sub")}
+    ${rowS("Acquisition, s'il la finance",i=>cur[i].hisMkt?"−"+k(cur[i].hisMkt):"—","sub")}
+    ${rowS("Ce qu'il nous paie : ticket + fixe + redevance",i=>"−"+k(cur[i].paid)+` <span class="muted" style="font-weight:500">(${pct(years[i].r?cur[i].paid/years[i].r:0)})</span>`,"sub")}
+    ${rowS("Son résultat, avant sa propre rémunération",i=>`<span class="${cls(cur[i].his)}">${k(cur[i].his)}</span> <span class="muted" style="font-weight:500">(${pct(years[i].r?cur[i].his/years[i].r:0)})</span>`,"big")}</tbody>`;
+  $("#spu").innerHTML=`<thead><tr><th></th><th>An 1</th><th>An 2</th><th>An 3</th></tr></thead><tbody>
+    ${rowS("Ticket",i=>k(cur[i].ticket),"sub")}
+    ${rowS("Fixe × 12",i=>k(cur[i].fee),"sub")}
+    ${rowS("Redevance",i=>k(cur[i].roy),"sub")}
+    ${rowS("Encaissé",i=>k(cur[i].paid),"tot")}
+    ${rowS("Serveurs & abonnements",i=>"−"+k(p.soft*12),"sub")}
+    ${rowS("Acquisition, si nous la finançons",i=>cur[i].ourMkt?"−"+k(cur[i].ourMkt):"—","sub")}
+    ${rowS("Notre équipe",i=>"−"+k(sp.team*12),"sub")}
+    ${rowS("Notre résultat",i=>`<span class="${cls(cur[i].ours)}">${k(cur[i].ours)}</span>`,"big")}
+    ${rowS("Dont sûr : ticket + fixe",i=>k(cur[i].ticket+cur[i].fee),"sub")}</tbody>`;
+  const P=Object.entries(PRESETS).map(([n,f])=>{const r=[0,1,2].map(i=>calcF(Object.assign({},sp,f),i));return {n,f,his:r.reduce((a,x)=>a+x.his,0),ours:r.reduce((a,x)=>a+x.ours,0),paid:r.reduce((a,x)=>a+x.paid,0),sure:f.ticket+f.fee*36,his1:r[0].his,ours1:r[0].ours};});
+  const caCum=years.reduce((a,y)=>a+y.r,0);
+  $("#spt").innerHTML=`<thead><tr><th></th>${P.map(x=>`<th>${x.n}</th>`).join("")}</tr></thead><tbody>
+    <tr><td>Il nous paie sur 3 ans</td>${P.map(x=>`<td>${k(x.paid)} <span class="muted">(${pct(caCum?x.paid/caCum:0)} de son CA)</span></td>`).join("")}</tr>
+    <tr class="sub"><td>dont sûr pour nous</td>${P.map(x=>`<td>${k(x.sure)}</td>`).join("")}</tr>
+    <tr class="big"><td>Lui, résultat cumulé</td>${P.map(x=>`<td><span class="${cls(x.his)}">${k(x.his)}</span></td>`).join("")}</tr>
+    <tr class="big"><td>Nous, résultat cumulé</td>${P.map(x=>`<td><span class="${cls(x.ours)}">${k(x.ours)}</span></td>`).join("")}</tr>
+    <tr class="sub"><td>Lui / nous, an 1</td>${P.map(x=>`<td>${k(x.his1)} / ${k(x.ours1)}</td>`).join("")}</tr>
+    <tr class="sub"><td>Part de la valeur créée qui nous revient</td>${P.map(x=>`<td>${pct(x.his+x.ours?x.ours/(x.his+x.ours):0)}</td>`).join("")}</tr></tbody>`;
+  $("#spnote").textContent=`Son résultat est avant sa propre rémunération : s'il produit lui-même une partie des heures, la ligne « production » est aussi son revenu. Notre résultat est après notre équipe (${eur(sp.team)} / mois) : c'est ce qui reste réellement. Changez le scénario de leads en bloc 1 pour voir les trois cas ; la formule qui tient dans les trois est la bonne.`;
   document.querySelectorAll("#split input").forEach(el=>el.addEventListener("input",()=>{st.sp[el.dataset.s]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
   document.querySelectorAll("[data-preset]").forEach(b=>b.onclick=()=>{Object.assign(st.sp,PRESETS[b.dataset.preset]); save(); render();});
+  document.querySelectorAll("[data-sc]").forEach(b=>b.onclick=()=>{Object.assign(st.v,SCEN[b.dataset.sc]); save(); render();});
   // listeners
   document.querySelectorAll("#mk input").forEach(el=>el.addEventListener("input",()=>{st.mk.rows[+el.dataset.mki][2]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
   document.querySelectorAll("#vt input").forEach(el=>el.addEventListener("input",()=>{st.v[el.dataset.v]=Math.max(0,Number(el.value)||0); save(); keepFocus(render);}));
